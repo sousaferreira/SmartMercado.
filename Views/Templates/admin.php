@@ -187,7 +187,7 @@
                     <div class="row text-muted">
                         <div class="col-6 text-start">
                             <p class="mb-0">
-                                <a href="index.html" class="text-muted"><strong>AdminKit Demo</strong></a> &copy; Murilo Morais
+                                <a href="index.html" class="text-muted"><strong>AdminKit Demo</strong></a> &copy; Priscila Sousa
                             </p>
                         </div>
                         <div class="col-6 text-end">

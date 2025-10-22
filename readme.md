@@ -16,3 +16,4 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 Estrutura base par os nossos sistemas
 
 ## DesenvolvimentoSJ &copy; Developed by Murilo Morais
+# SmartMercado
