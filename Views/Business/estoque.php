@@ -17,10 +17,10 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="ModalProduto" tabindex="-1" aria-labelledby="ModalProdutoLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="ModalProdutoLabel">Adione um novo produto</h1>
+                                    <h1 class="modal-title fs-5 text-primary" id="ModalProdutoLabel">Adicione um novo produto</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -41,28 +41,27 @@
                                             <label for="floatingInput">Valor:</label>
                                         </div>
                                         <div class="form-floating">
-                                            <input type="text" name="quantidade" class="form-control mt-3" id="floatingInput" placeholder="R$ 00.00">
+                                            <input type="number" name="quantidade" class="form-control mt-3" id="floatingInput" placeholder="R$ 00.00">
                                             <label for="floatingInput">Quantidade:</label>
                                         </div>
-                                        <div class="">
+                                        <div class="form-floating">
+                                            <input type="number" name="codigo_barras" class="form-control mt-3" id="floatingInput" placeholder="R$ 00.00">
+                                            <label for="floatingInput">Código de barras:</label>
+                                        </div>
+                                        <div class="mt-3">
                                             <label for="floatingInput">Selecione uma imagem</label>
-                                            <input type="file" name="imagem" id="" accept="imagem/" class="form-control mt-3">
+                                            <input type="file" name="imagem" id="" accept="imagem/" class="form-control mt-1">
                                         </div>
 
 
-                                        <label for="floatingInput">Categoria:</label>
+                                      <div class="mt-3">
                                         <select name="categoria_id" class="form-select" required>
                                             <option value="">Selecione uma categoria</option>
                                             <?php foreach ($categorias as $cat): ?>
                                                 <option value="<?= $cat['id'] ?>"><?= $cat['nome'] ?></option>
                                             <?php endforeach; ?>
                                         </select>
-
-
-
-
-
-
+                                        </div>
 
                                 </div>
                                 <div class="modal-footer">
@@ -74,7 +73,7 @@
                     </div>
 
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
 
@@ -93,7 +92,7 @@
                                     <tr>
                                         <?php $id = $produto['hash'] ?>
                                         <td><?= htmlspecialchars($produto['nome']) ?></td>
-                                        <td><?= htmlspecialchars($produto['valor']) ?></td>
+                                        <td><?= number_format($produto['valor'], 2, ',', '.') ?></td>
                                         <td><?= htmlspecialchars($produto['categoria_id']) ?></td>
                                         <td><?= htmlspecialchars($produto['quantidade']) ?></td>
                                         <td>
@@ -104,7 +103,7 @@
                                                     <path fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z' />
                                                 </svg></a>
 
-                                            <a href="<?= BASE_URL . "Product/delete/$id" ?>" onclick="return confirm('Você tem certeza que vai deletar?')"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash' viewBox='0 0 16 16'>
+                                            <a href="<?= BASE_URL . "Product/delete/$id" ?>" onclick="return confirm('Você tem certeza que vai deletar?')"><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='#ce1f1fff' class='bi bi-trash' viewBox='0 0 16 16'>
                                                     <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z' />
                                                     <path d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z' />
                                                 </svg>
@@ -115,42 +114,42 @@
 
 
                                     <div class="modal fade" id="modal-<?= $id ?>" tabindex="-1" aria-labelledby="label-<?= $id ?>" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="label-<?= $id ?>">Produto: <?= htmlspecialchars($produto['nome']) ?></h1>
+                                                    <h1 class="modal-title fs-5 text-primary" id="label-<?= $id ?>">Produto: <?= htmlspecialchars($produto['nome']) ?></h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body text-center">
-                                                    <form class="mt-5" method="post" action="<?= BASE_URL; ?>Product/edit/<?= $produto['hash'] ?>" enctype="multipart/form-data">
-                                                        <div class="form-floating">
+                                                <div class="modal-body ">
+                                                    <form class="" method="post" action="<?= BASE_URL; ?>Product/edit/<?= $produto['hash'] ?>" enctype="multipart/form-data">
+                                                        <div class="form-floating mt-3">
                                                             <input type="text" name="nome" class="form-control" id="floatingInput" placeholder="Produto" value="<?= $produto['nome'] ?>">
                                                             <label for="floatingInput">Nome do produto</label>
                                                         </div>
-                                                        <div class="form-floating">
-
+                                                        <div class="form-floating mt-3">
                                                             <textarea id="descricao" name="descricao" rows="5" cols="40" class="form-control"><?= $produto['descricao'] ?></textarea>
                                                             <label for="floatingInput">Descricao</label>
                                                         </div>
 
-                                                        <div class="form-floating">
+                                                        <div class="form-floating mt-3">
                                                             <input type="text" name="valor" class="form-control" id="floatingInput" placeholder="R$ 00.00" onkeypress="return(moeda(this,'.',',',event))" value="<?= $produto['valor'] ?>">
                                                             <label for="floatingInput">Valor:</label>
                                                         </div>
                                                         <div class="">
-                                                            <label for="floatingInput">Selecione uma imagem</label>
+                                                            <label for="floatingInput mt-3">Selecione uma imagem</label>
                                                             <input type="file" name="imagem" id="imagem" accept="imagem/" class="form-control">
                                                         </div>
-                                                        <label for="floatingInput">Categoria:</label>
+                                                        <div class="mt-3">
                                                         <select name="categoria_id" class="form-select" required>
                                                             <option value="">Selecione uma categoria</option>
                                                             <?php foreach ($categorias as $cat): ?>
                                                                 <option value="<?= $cat['id'] ?>"><?= $cat['nome'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
-
-                                                        <button class="w-90 btn btn-lg btn-success mt-3" type="submit" onclick="alert()">Editar</button>
-
+                                                            </div>    
+                                                         <div class="modal-footer">
+                                    
+                                                        <button class="w-90 btn btn-lg btn-primary mt-3" type="submit" onclick="return confirm('Tem certeza que está tudo certo?')">Editar</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -165,5 +164,7 @@
             </div>
         </div>
 
+     
+        <script src="<?= BASE_URL; ?>Assets/js/script.js"></script>
     </div>
 </main>

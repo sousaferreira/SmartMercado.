@@ -18,6 +18,10 @@ class HomeController extends Controller
 
 	public function index()
 	{
+		$this->data['nivel-1'] = "Dashboard";
+$this->data['nivel-2'] = "Principal";
+
+
 		$produto = new Produto();
 		$products = $produto->getAll();
 		$this->data['products'] = $products;

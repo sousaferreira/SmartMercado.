@@ -4,10 +4,10 @@ class Produto extends Model
 {
 
 
-    public function addProduct($nome, $valor,  $categoria_id, $imagem, $descricao, $situacao, $quantidade)
+    public function addProduct($nome, $valor,  $categoria_id, $imagem, $descricao, $situacao, $quantidade, $codigo_barras)
     {
 
-        $sql = $this->db->prepare("INSERT INTO produto (nome, valor, categoria_id, imagem, descricao, situacao, quantidade) VALUES (:nome, :valor, :categoria_id, :imagem, :descricao, :situacao, :quantidade)");
+        $sql = $this->db->prepare("INSERT INTO produto (nome, valor, categoria_id, imagem, descricao, situacao, quantidade, codigo_barras) VALUES (:nome, :valor, :categoria_id, :imagem, :descricao, :situacao, :quantidade, :codigo_barras)");
 
         $sql->bindValue(':nome', $nome);
         $sql->bindValue(':valor', $valor);
@@ -16,12 +16,14 @@ class Produto extends Model
         $sql->bindValue(':imagem', $imagem);
         $sql->bindValue(':situacao', $situacao);
         $sql->bindValue(':quantidade', $quantidade);
+        $sql->bindValue(':codigo_barras', $codigo_barras);
         $sql->execute();
 
         return $this->db->lastInsertId();
     }
 
-    public function addVendaItem($nome, $valor, $categoria_id, $descricao, $situacao){
+    public function addVendaItem($nome, $valor, $categoria_id, $descricao, $situacao)
+    {
         $quantidade = 1;
         $sql = $this->db->prepare("INSERT INTO venda_item (nome, valor, categoria_id, descricao, situacao, quantidade) VALUES (:nome, :valor, :categoria_id, :descricao, :situacao, :quantidade)");
 
@@ -32,7 +34,6 @@ class Produto extends Model
         $sql->bindValue(':situacao', $situacao);
         $sql->bindValue(':quantidade', $quantidade);
         $sql->execute();
-
     }
 
     public function getId()
@@ -60,17 +61,15 @@ class Produto extends Model
         $sql->execute();
         return $sql->fetchAll();
     }
-     
-     public function SelectCart($hash)
+
+    public function SelectCart($hash)
     {
         $sql = $this->db->prepare("SELECT id, nome, valor, descricao, imagem, categoria_id, quantidade FROM produto WHERE hash = :hash");
         $sql->bindValue(":hash", $hash);
         $sql->execute();
         return $sql->fetch();
-
-        
     }
-   
+
     public function SelectForm($hash)
     {
         $sql = $this->db->prepare("SELECT * FROM produto WHERE hash = :hash");
@@ -100,10 +99,12 @@ class Produto extends Model
         $sql->execute();
     }
 
-    public function editAmount($quantidade, $hash){
-        $sql = $this->db->prepare("UPDATE produto SET quantidade = :quantidade WHERE hash =:hash");
+    public function editAmount($quantidade, $hash, $valor)
+    {
+        $sql = $this->db->prepare("UPDATE produto SET quantidade = :quantidade, valor = :valor WHERE hash =:hash");
         $sql->bindValue(":hash", $hash);
         $sql->bindValue(":quantidade", $quantidade);
+         $sql->bindValue(":valor", $valor);
         $sql->execute();
     }
     // Update hash product
@@ -121,8 +122,8 @@ class Produto extends Model
         $sql->execute();
         return $sql->fetchAll();
     }
-    
-      public function Site()
+
+    public function Site()
     {
         $sql = $this->db->prepare("SELECT * FROM produto WHERE situacao = 1 AND quantidade >0");
         $sql->execute();
@@ -159,5 +160,44 @@ class Produto extends Model
         $sql = $this->db->prepare("SELECT * FROM produto WHERE situacao = 1 AND quantidade >0 AND categoria_id=4");
         $sql->execute();
         return $sql->fetchAll();
+    }
+    public function SelectFinalizadas()
+    {
+        $sql = $this->db->prepare("SELECT * FROM compra_finalizada WHERE entrega = 1");
+        $sql->execute();
+        return $sql->fetchAll();
+    }
+
+     
+     public function SelectComprasPendentes()
+    {
+        $sql = $this->db->prepare("SELECT * FROM compra_finalizada WHERE entrega = 0");
+        $sql->execute();
+        return $sql->fetchAll();
+    }
+    public function SelectComprasID($id)
+    {
+        $sql = $this->db->prepare("SELECT * FROM compra_finalizada WHERE entrega = 1 AND id_compra = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+        return $sql->fetchAll();
+    }
+    public function SelectComprasFinishID($id)
+    {
+        $sql = $this->db->prepare("SELECT * FROM compra_finalizada WHERE entrega = 0 AND id_compra = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+        return $sql->fetchAll();
+    }
+    public function Delivered($id)
+    {
+        $sql = $this->db->prepare("UPDATE compra_finalizada SET entrega = 0 WHERE id_compra = :id");
+        $sql->bindValue(":id", $id);
+        $sql->execute();
+    }
+     public function VendasMensais(){
+        $sql = $this->db->prepare("SELECT MONTH(`data`) AS mes, SUM(`quantidade`) AS quantidade FROM `produtos compra` GROUP BY MONTH(`data`) ORDER BY mes");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 }

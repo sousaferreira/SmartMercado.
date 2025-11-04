@@ -1,151 +1,90 @@
-<main class="content">
+<main class="container mt-4 h-100">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h1 class="card-title mb-0">Gerenciar Caixa</h1>
+                </div>
 
-    <style>
-        .produto-card {
-            display: flex;
-            flex-direction: column;
-            height: 90%;
-            width: 100%;
-        }
+                <div class="card-body">
+                    <!-- 🔹 TABELA RESPONSIVA -->
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Id operador</th>
+                                    <th>Abertura do caixa</th>
+                                    <th>Fechamento de caixa</th>
+                                    <th>Valor Inicial</th>
+                                    <th>Valor final</th>
+                                    <th>Status</th>
+                                    <th>Caixa</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($caixa as $produto): 
+                                    $id = $produto['id'];
+                                ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($produto['id_operador']) ?></td>
+                                    <td><?= htmlspecialchars($produto['data_abertura']) ?></td>
+                                    <td><?= htmlspecialchars($produto['data_fechamento']) ?></td>
+                                    <td><?= htmlspecialchars($produto['valor_inicial']) ?></td>
+                                    <td><?= htmlspecialchars($produto['valor_final']) ?></td>
+                                    <td>
+                                        <?php if($produto['status'] == 'Aberto'): ?>
+                                            <span class="badge bg-success"><?= $produto['status'] ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-danger"><?= $produto['status'] ?></span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?= htmlspecialchars($produto['caixa']) ?></td>
+                                    <td>
+                                        <a data-bs-toggle="modal" data-bs-target="#modal-<?= $id ?>" class="me-2" title="Adicionar valor inicial">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus text-primary" viewBox="0 0 16 16">
+                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
 
-        .card-img-top{
-            padding: 10px;
-            width: 60%;
-            height: 50%;
-            object-fit: contain;
-        }
-       
-
-        .produto-card {
-            display: flex;
-            flex-direction: column;
-            height: 90%;
-            width: 100%;
-        }
-
-        .card-img-top {
-            padding: 10px;
-            width: 60%;
-            height: 40%;
-            object-fit: contain;
-        }
-
-        input[type=number]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-
-        }
-
-        input[type=number] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-
-        }
-
-        .text-logo {
-            color: #71841c;
-            font-family: "Fascinate", system-ui;
-            font-size: 60px;
-            font-weight: 200;
-            font-style: normal;
-        }
-
-        .category {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #eeeeeeff;
-            width: 60px;
-            height: 60px;
-
-        }
-
-        .produto-card {
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            padding: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-    
-    </style>
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-header"></div>
-
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-12 col-md-8">
-                        <div class="row">
-                            <?php foreach ($products as $produto): ?>
-                                <div class="col-sm-6 col-lg-4 mb-4">
-                                    <div class="card produto-card">
-                                        <div class="card-header">
-                                            <h4 class="card-title"><?= htmlspecialchars($produto['nome']) ?></h4>
-                                        </div>
-                                        <img src="<?= BASE_URL . $produto['imagem'] ?>" class="card-img-top" alt="<?= htmlspecialchars($produto['nome']) ?>" style="max-width: 300px;">
-                                        <div class="card-body d-flex flex-column">
-                                            <form action="<?= BASE_URL ?>Business/AddItemVenda/<?= $produto['hash'] ?>" method="get" class="mt-auto">
-                                            
-                                            <p><?= htmlspecialchars($produto['descricao']) ?></p>
-                                            <h4><?= htmlspecialchars($produto['valor']) ?></h4>
-                                            <h6>Quantidade em estoque</h6>
-                                            <?php 
-                                                if ($produto['quantidade'] <=0){
-                                                    echo '<button class="btn btn-danger m-1"> Indisponivel </button>';
-                                                    echo '<td><a href='. BASE_URL . 'Business/Return/'.$produto['hash'].' class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5" />
-                                            </svg> Retornou</a></td>';
-                                                }
-                                                else{
-                                                    echo '<div class="d-flex align-items-center">';
-                                                    echo '<button class="btn btn-light m-2">'.htmlspecialchars($produto['quantidade']) .'</button>';
-                                                    echo '<button type="submit" class="btn btn-primary m-2 ">Adicionar</button>';
-                                                    echo '</div>';
-                                                }
+                                <!-- Modal individual -->
+                                <div class="modal fade" id="modal-<?= $id ?>" tabindex="-1" aria-labelledby="label-<?= $id ?>" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5 text-primary" id="label-<?= $id ?>">Adicione Valor Inicial</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <?php
+                                            $data_abertura = isset($operador['data_abertura']) 
+                                                ? str_replace(['/', ':', ' '], ['-', '-', '_'], trim($operador['data_abertura'])) 
+                                                : '';
                                             ?>
-                                            
-
-                                                <input type="hidden" name="nome" value="<?= htmlspecialchars($produto['nome']) ?>">
-                                                <input type="hidden" name="valor" value="<?= $produto['valor'] ?>">
-                                                <input type="hidden" name="categoria_id" value="<?= $produto['categoria_id'] ?>">
-                                                <input type="hidden" name="descricao" value="<?= $produto['descricao'] ?>">
-                                                <input type="hidden" name="imagem" value="<?= $produto['imagem'] ?>">
-                                                
-                                            </form>
+                                            <div class="modal-body">
+                                                <form method="post" action="<?= BASE_URL; ?>Business/AddValorInicial/<?= $produto['id'] ?>/<?= $data_abertura?>" enctype="multipart/form-data">
+                                                    <div class="form-floating mt-3">
+                                                        <input type="text" name="valor_inicial" class="form-control" id="valor_inicial" placeholder="R$ 00.00" onkeypress="return(moeda(this,'.',',',event))">
+                                                        <label for="valor_inicial">Valor inicial</label>
+                                                    </div>
+                                                    <div class="mt-3 text-end">
+                                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
-
-
-                    <div class="col-12 col-md-4">
-                        <div class="card p-3" style="position: sticky; top: 20px;">
-                            <h4>Seu Carrinho</h4>
-                            <p><?= $soma[0] ?></p>
-
-                            <form action="<?= BASE_URL ?>Business/FinishBuy" method="post">
-                                <select name="forma_de_pagamento" class="form-select mb-3" required>
-                                    <option value="Cartão">Cartão</option>
-                                    <option value="Pix">Pix</option>
-                                    <option value="Especie">Espécie</option>
-                                </select>
-                                <input type="hidden" name="total" id="total-input" value="0">
-
-                                <a href="<?= BASE_URL ?>Business/Recomeçar" class="btn btn-danger w-100 mb-2">Cancelar Compra</a>
-                                <button type="submit" class="btn btn-success w-100 ">Realizar Compra</button>
-
-                            </form>
-                        </div>
-                    </div>
+                    <!-- 🔹 FIM DA TABELA RESPONSIVA -->
                 </div>
-
             </div>
         </div>
+    </div>
 
-
-
+    <script src="<?= BASE_URL; ?>Assets/js/script.js"></script>
 </main>

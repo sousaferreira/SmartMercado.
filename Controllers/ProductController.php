@@ -83,8 +83,10 @@ class ProductController extends Controller
             $categoria_id = (int)$_POST['categoria_id'];
             $descricao = addslashes($_POST['descricao']);
             $quantidade = addslashes($_POST['quantidade']);
+            $codigo_barras = addslashes($_POST['codigo_barras']);
             $situacao = 1;
             $id = $produto->getId();
+            
 
 
             if (isset($_FILES["imagem"]) && !empty($_FILES["imagem"])) {
@@ -96,7 +98,8 @@ class ProductController extends Controller
                 $upload = uploaded_file($file, $folder);
 
                 if ($upload !== false) {
-                    $idProduct = $produto->addProduct($nome, $valor, $categoria_id, $upload, $descricao, $situacao, $quantidade);
+                    $idProduct = $produto->addProduct($nome, $valor, $categoria_id, $upload, $descricao, $situacao, $quantidade, $codigo_barras);
+                    
                     $venda = $produto->addVendaItem($nome, $valor, $categoria_id, $descricao, $situacao);
                     $hash = hash('sha256', $idProduct);
                     $produto->editHashProduct($idProduct, $hash);
@@ -106,7 +109,7 @@ class ProductController extends Controller
             }
 
 
-            header('Location: ' . BASE_URL . 'Home');
+            header('Location: ' . BASE_URL . 'Business/estoque');
             exit;
         }
         header('Location: ' . BASE_URL . 'Product');
@@ -180,7 +183,6 @@ class ProductController extends Controller
                 $produto->editProduct($hash, $nome, $valor, $descricao, $imagemAntiga,  $categoria_id);
             }
 
-            // $produto->editProduct($id, $nome, $valor, $descricao, $imagem);
             header('Location: ' . BASE_URL . 'Business/estoque');
             exit;
 

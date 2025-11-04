@@ -1,6 +1,12 @@
 <main class="content">
     <div class="container-fluid">
+        <a href="<?= BASE_URL ?>Business/VoltarProducts" class="mb-3 btn d-flex align-items-center justify-content-center btn btn-outline-secondary rounded-circle" style="width: 38px; height: 38px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        </a>
         <div class="row mb-2 mb-xl-3">
+
             <div class="col-auto d-none d-sm-block">
                 <h3><strong>Espécie</strong></h3>
             </div>
@@ -23,7 +29,7 @@
 
             </div>
             <div class="card-body">
-                <div class="row d-flex justify-content-between">
+                <div class="row d-flex justify-content-center">
                     <div class="col-md-6">
                         <div class="card rounded">
                             <div class="card-header"></div>
@@ -43,27 +49,27 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">Calcular troco</div>
                             <div class="card-body">
-                                <form action="<?= BASE_URL ?>Business/Calc/<?=$soma[0]?>" method="post">
+                                <form action="<?= BASE_URL ?>Business/Calc/<?= $soma[0] ?>" method="post">
                                     <div class="form-floating">
                                         <input type="text" name="valor" class="form-control" id="floatingInput" placeholder="R$ 00.00" onkeypress="return(moeda(this,'.',',',event))">
                                         <label for="floatingInput">Valor:</label>
                                     </div>
                                     <div class="row d-flex align-items-center">
-                                        <div class="col-md-10">
-                                            <div class="shadow-lg p-3 mb-4 bg-whitw rounded">R$ <?= $troco ?></div>
+                                       <div class="col-7">
+                                            <div class="shadow-lg p-3 mb-4 bg-whitw rounded mt-3">R$ <?= $troco ?></div>
                                         </div>
-                                        <div class="col-md-2">
-                                        <button type="submit" class="btn btn-success h-100">Calcular</button>
+                                        <div class="col-5">
+                                            <button type="submit" class="btn btn-success " style="background-color: #378548ff; border-color: #378548ff; border-radius: 12px; font-weight: 800; padding: 10px;">Calcular</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                         <div class="actions">
+                        <div class="actions">
                             <a href="<?= BASE_URL ?>Business/Recomeçar" onclick="return confirm('Você tem certeza que vai cancelar a compra?')" class="btn btn-danger px-4 py-2">Cancelar</a>
                             <button type="button" class="btn btn-success px-2 py-2" data-toggle="modal" data-target="#exampleModal">
                                 Finalizar Compra
@@ -92,6 +98,7 @@
             </div>
         </div>
     </div>
+    <script src="<?= BASE_URL; ?>Assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

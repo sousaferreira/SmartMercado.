@@ -1,14 +1,21 @@
 <main class="content">
     <div class="container-fluid">
+        <a href="<?= BASE_URL ?>Business/VoltarProducts" class="mb-3 btn d-flex align-items-center justify-content-center btn btn-outline-secondary rounded-circle" style="width: 38px; height: 38px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+                        </svg>
+                    </a>
         <div class="row mb-2 mb-xl-3">
-            <div class="col-auto d-none d-sm-block">
-                <h3><strong>Pix</strong></h3>
+            
+            <div class="col-auto d-none d-sm-block ">
+                
+                <h3><strong>Cartão</strong></h3>
             </div>
 
             <div class="col-auto ms-auto text-end mt-n1">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
-                        <li class="breadcrumb-item">Pix</li>
+                        <li class="breadcrumb-item">Cartão</li>
                         <li class="breadcrumb-item active" aria-current="page">Index</li>
                     </ol>
                 </nav>
@@ -49,7 +56,7 @@
                                 <div class="card-title">Informações</div>
                             </div>
                             <div class="card-body">
-                                <form action="tipo" method="get">
+                                <form action="tipo" method="get" >
                                     <select name="tipo-cartao" class="form-select mb-3" required>
                                         <option value="debito">Débito</option>
                                         <option value="credito">Crédito</option>
@@ -72,7 +79,7 @@
                                     </select>
                                     <input type="hidden" name="valor" value="<?= $juros ?>">
                                     <div class="shadow-lg p-3 mb-2 bg-white rounded"><?= $parcela ? $parcela : '1x ' ?> <?= $porcetagem ?>, <?= $juros ? $juros : $soma[0] ?> </div>
-                                    <button type="submit" class="btn btn-primary">Calcular Juros</button>
+                                    <button type="submit" class="btn btn-primary" style="background-color: #4479ecff; border-color: #4479ecff; border-radius: 12px; font-weight: 800; padding: 10px;">Calcular Juros</button>
                                 </form>
                             </div>
 

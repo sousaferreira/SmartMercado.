@@ -13,6 +13,7 @@
                     <input type="text" name="quantidade" class="form-control" id="floatingInput" placeholder="Quantidade" value="">
                     <label for="floatingInput">Quantidade</label>
                 </div>
+                
 
                 <button class="w-90 btn btn-lg btn-success mt-3" type="submit" onclick="alert()">Editar</button>
 

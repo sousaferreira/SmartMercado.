@@ -12,12 +12,17 @@
 	<?php if (isset($viewData['CSS'])) {
 		echo $viewData['CSS'];
 	}; ?>
+<style>
+	/* .btn-success{
+		background-color: ;
+	} */
+</style>
 </head>
 
 <body class="text-center">
 	<main class="form-signin">
 		<form method="post">
-			<img class="mb-1 img-fluid" src="<?= BASE_URL . 'Assets/img/login.png'; ?>" alt="IMG">
+			<img class="mb-1 img-fluid" src="<?= BASE_URL . 'Assets/img/login-da-conta.png'; ?>" alt="IMG">
 
 			<div class="form-floating">
 				<input type="email" name="email" class="form-control" id="floatingInput" placeholder="nome@email.com" <?= (isset($viewData["email"]) && !empty($viewData["email"])) ? "value='" . $viewData["email"] . "'" : ""; ?>>

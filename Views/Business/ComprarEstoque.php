@@ -52,6 +52,16 @@
                                                             <input type="number" name="quantidade" class="form-control" id="quantidade-<?= $id ?>" placeholder="Quantidade" required>
                                                             <label for="quantidade-<?= $id ?>">Quantidade</label>
                                                         </div>
+
+                                                        <div class="form-floating mb-3 mt-3">
+                                                            <input type="text" name="valor" class="form-control" id="floatingInput" placeholder="R$ 00.00" onkeypress="return(moeda(this,'.',',',event))" value="<?= $produto['valor'] ?>">
+                                                            <label for="floatingInput">Valor:</label>
+                                                        </div>
+                                                        <div class="form-floating mt-3 mb-3">
+
+                                                            <textarea id="descricao" name="descricao" rows="5" cols="40" class="form-control mt-3"></textarea>
+                                                            <label for="floatingInput">Observação</label>
+                                                        </div>
                                                         <button class="btn btn-success w-100" type="submit">Atualizar</button>
                                                     </form>
                                                 </div>

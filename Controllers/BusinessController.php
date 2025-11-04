@@ -2,9 +2,7 @@
 
 class BusinessController extends Controller
 {
-
     private $data = array();
-
 
     public function __construct()
     {
@@ -18,16 +16,20 @@ class BusinessController extends Controller
         }
     }
 
+    // =================== ESTOQUE ===================
     public function estoque()
     {
         $produto = new Produto();
-         $categoria = new Categoria();
+        $categoria = new Categoria();
+
         $products = $produto->getAll();
-         $this->data['categorias'] = $categoria->getAll();
+        $this->data['categorias'] = $categoria->getAll();
         $this->data['products'] = $products;
 
         $this->loadTemplateAdmin('Business/estoque', $this->data);
     }
+
+    // =================== CAIXA ===================
     public function caixa()
     {
         $produto = new Produto();
@@ -39,54 +41,58 @@ class BusinessController extends Controller
 
         $this->data['soma'] = '0';
 
-        $this->loadTemplateAdmin('Business/caixa', $this->data);
+        $this->data['nivel-1'] = "Caixa";
+
+        $this->loadViewInTemplate('PDV/LoginOperador', $this->data);
     }
+
 
     public function AddItemVenda()
     {
         $venda = new Venda();
 
-        $nome = addslashes($_GET['nome']);
-        $valor = addslashes($_GET['valor']);
+        if (isset($_GET['nome']) && isset($_GET['valor'])) {
+            $nome = addslashes($_GET['nome']);
+            $valor = addslashes($_GET['valor']);
+            $venda->AddVendaItem($nome, 1);
+            $venda->AddSoma($valor);
 
-        $venda->AddVendaItem($nome, 1); 
-        $venda->AddSoma($valor);
+            // Evita reenvio de formulário
+            header("Location: " . BASE_URL . "Business/AddItemVenda");
+            exit;
+        }
 
         $produto = new Produto();
         $this->data['products'] = $produto->getEstoque();
         $this->data['soma'] = $venda->SelectSoma();
 
-       
-        $this->loadTemplateAdmin('Business/caixa', $this->data);
+        $this->loadViewInTemplate('Atm/caixa', $this->data);
     }
 
     public function Recomeçar()
     {
         $venda = new Venda();
         $venda->DeleteVenda();
-
         header("Location: caixa");
         exit;
     }
 
-    public function Finish($nome){
+    public function Finish($nome)
+    {
         $quantidade = new Venda();
-        $quantidade->ProdutoQuantidade($nome , $quantidade);
-
-
+        $quantidade->ProdutoQuantidade($nome, $quantidade);
     }
 
     public function FinishBuy()
     {
-        
         $venda = new Venda();
-
         $this->data['soma'] = $venda->SelectSoma();
-
         $forma_de_pagamento = $_POST['forma_de_pagamento'];
+
         if ($forma_de_pagamento == 'Pix') {
             $this->loadTemplateAdmin('Business/Pix', $this->data);
         }
+
         if ($forma_de_pagamento == 'Cartão') {
             $venda = new Venda();
             $soma = $venda->SelectSoma();
@@ -96,6 +102,7 @@ class BusinessController extends Controller
             $this->data['juros'] = $valor;
             $this->loadTemplateAdmin('Business/Cartao', $this->data);
         }
+
         if ($forma_de_pagamento == 'Especie') {
             $this->data['troco'] = '';
             $this->loadTemplateAdmin('Business/Especie', $this->data);
@@ -104,77 +111,35 @@ class BusinessController extends Controller
 
     public function tipo()
     {
-        
         $venda = new Venda();
-
         $this->data['soma'] = $venda->SelectSoma();
 
         $venda = new Venda();
         $soma = $venda->SelectSoma();
         $valor = $soma[0];
-
         $juros = $_GET['juros'];
-        if ($juros == 'x1') {
-            $this->data['parcela'] = '1x';
-            $this->data['porcetagem'] = 'sem juros';
-            $this->data['juros'] = $valor + (($valor * 0) / 100);
-        }
-        if ($juros == 'x2') {
-            $this->data['parcela'] = '2x';
-            $this->data['porcetagem'] = 'com 5% de juros';
-            $this->data['juros'] = $valor + (($valor * 5) / 100);
-        }
-        if ($juros == 'x3') {
-            $this->data['parcela'] = '3x';
-            $this->data['porcetagem'] = 'com 10% de juros';
-            $this->data['juros'] = $valor + (($valor * 10) / 100);
-        }
-        if ($juros == 'x4') {
-            $this->data['parcela'] = '4x';
-            $this->data['porcetagem'] = 'com 15% de juros';
-            $this->data['juros'] = $valor + (($valor * 15) / 100);
-        }
-        if ($juros == 'x5') {
-            $this->data['parcela'] = '5x';
-            $this->data['porcetagem'] = 'com 20% de juros';
-            $this->data['juros'] = $valor + (($valor * 20) / 100);
-        }
-        if ($juros == 'x6') {
-            $this->data['parcela'] = '6x';
-            $this->data['porcetagem'] = 'com 25% de juros';
-            $this->data['juros'] = $valor + (($valor * 25) / 100);
-        }
-        if ($juros == 'x7') {
-            $this->data['parcela'] = 'x7';
-            $this->data['porcetagem'] = 'com 30% de juros';
-            $this->data['juros'] = $valor + (($valor * 30) / 100);
-        }
-        if ($juros == 'x8') {
-            $this->data['parcela'] = 'x8';
-            $this->data['porcetagem'] = 'com 35% de juros';
-            $this->data['juros'] = $valor + (($valor * 35) / 100);
-        }
-        if ($juros == 'x9') {
-            $this->data['parcela'] = 'x9';
-            $this->data['porcetagem'] = 'com 40% de juros';
-            $this->data['juros'] = $valor + (($valor * 40) / 100);
-        }
-        if ($juros == 'x10') {
-            $this->data['parcela'] = 'x10';
-            $this->data['porcetagem'] = 'com 45% de juros';
-            $this->data['juros'] = $valor + (($valor * 45) / 100);
-        }
-        if ($juros == 'x11') {
-            $this->data['parcela'] = 'x11';
-            $this->data['porcetagem'] = 'com 50% de juros';
-            $this->data['juros'] = $valor + (($valor * 50) / 100);
-        }
-        if ($juros == 'x12') {
-            $this->data['parcela'] = 'x12';
-            $this->data['porcetagem'] = 'com 55% de juros';
-            $this->data['juros'] = $valor + (($valor * 55) / 100);
-        }
 
+        $juros_lista = [
+            'x1' => [0, '1x', 'sem juros'],
+            'x2' => [5, '2x', 'com 5% de juros'],
+            'x3' => [10, '3x', 'com 10% de juros'],
+            'x4' => [15, '4x', 'com 15% de juros'],
+            'x5' => [20, '5x', 'com 20% de juros'],
+            'x6' => [25, '6x', 'com 25% de juros'],
+            'x7' => [30, 'x7', 'com 30% de juros'],
+            'x8' => [35, 'x8', 'com 35% de juros'],
+            'x9' => [40, 'x9', 'com 40% de juros'],
+            'x10' => [45, 'x10', 'com 45% de juros'],
+            'x11' => [50, 'x11', 'com 50% de juros'],
+            'x12' => [55, 'x12', 'com 55% de juros'],
+        ];
+
+        if (isset($juros_lista[$juros])) {
+            $j = $juros_lista[$juros];
+            $this->data['parcela'] = $j[1];
+            $this->data['porcetagem'] = $j[2];
+            $this->data['juros'] = $valor + (($valor * $j[0]) / 100);
+        }
 
         $this->loadTemplateAdmin('Business/Cartao', $this->data);
     }
@@ -182,36 +147,31 @@ class BusinessController extends Controller
     public function Comprar($forma_de_pagamento, $juros)
     {
         $venda = new Venda();
-
         $itens = $venda->SelectItem();
 
-        foreach ($itens as $item){
-             $venda->ProdutoQuantidade($item['nome']);
+        foreach ($itens as $item) {
+            $venda->ProdutoQuantidade($item['nome']);
         }
 
         $venda = new Venda();
         $venda->DeleteVenda();
-
         $venda->AddCompra($juros, $forma_de_pagamento);
         $venda->Delete();
 
-
-        header('Location: ' . BASE_URL . 'Business/caixa');
+        header('Location: ' . BASE_URL . 'Atm/caixa');
         exit;
     }
 
     public function Calc($soma)
     {
-        if($soma == ''){
+        if ($soma == '') {
             $soma = 0;
         }
-        $venda = new Venda();
 
+        $venda = new Venda();
         $this->data['soma'] = $venda->SelectSoma();
 
-
         $valor = doubleval($_POST['valor']);
-        
         $this->data['troco'] = $valor - $soma;
 
         $this->loadTemplateAdmin('Business/Especie', $this->data);
@@ -221,13 +181,13 @@ class BusinessController extends Controller
     {
         $venda = new Venda();
         $missing = $venda->RupturaEstoque();
+        $this->data['missing'] = $missing;
 
-        
-        $this->data['missing'] =  $missing;
         $this->loadTemplateAdmin('Business/ComprarEstoque', $this->data);
     }
 
-    public function ExportarCSV(){
+    public function ExportarCSV()
+    {
         $venda = new Venda();
         $missing = $venda->RupturaEstoque();
 
@@ -235,10 +195,9 @@ class BusinessController extends Controller
         header('Content-Disposition: attachment; filename=ruptura_estoque.csv');
 
         $output = fopen('php://output', 'w');
-
         fputcsv($output, ['ID', 'Nome', 'Quantidade']);
 
-         foreach ($missing as $produto) {
+        foreach ($missing as $produto) {
             fputcsv($output, [
                 $produto['id'],
                 $produto['nome'],
@@ -250,40 +209,140 @@ class BusinessController extends Controller
         exit;
     }
 
-    public function Return($id){
+    public function Return($id)
+    {
         $produto = new Produto();
-        $products =  $produto->SelectForm($id);
+        $products = $produto->SelectForm($id);
         $categoria = new Categoria();
-        $this->data['categorias'] = $categoria->getAll();
 
+        $this->data['categorias'] = $categoria->getAll();
         $this->data['products'] = $products;
         $this->data['nivel-1'] = 'Dashboard';
 
         $this->loadTemplateAdmin("Business/ComprarEstoque", $this->data);
-    
     }
-    public function editAmount($hash){
+
+    public function editAmount($hash)
+    {
         $produto = new Produto();
-
-      
-        if (isset($_GET['quantidade']) && !empty($_GET['quantidade'])){
+        if (isset($_GET['quantidade']) && !empty($_GET['quantidade'])) {
             $quantidade = addslashes($_GET['quantidade']);
-          
-            $produto->editAmount($quantidade, $hash);
-
+             $valor = addslashes($_GET['valor']);
+            $produto->editAmount($quantidade, $hash, $valor);
             header('Location: ' . BASE_URL . 'Home');
             exit;
-
-            
         }
     }
-    public function Voltar(){
+
+    public function Voltar()
+    {
         header('Location: ' . BASE_URL . 'Home');
         exit;
     }
 
-    
-    
-}
+    public function ComprasFinalizadas()
+    {
+        $produto = new Produto();
+        // $this->data['compras'] = $produto->SelectFinalizadas();
+        $this->data['finalizadas'] = $produto->SelectFinalizadas();
 
+        $this->loadTemplateAdmin("Business/client/CompraFeitas", $this->data);
+    }
+     public function ComprasPedentes()
+    {
+        $produto = new Produto();
+        $this->data['pendentes'] = $produto->SelectComprasPendentes();
+        // $this->data['finalizadas'] = $produto->SelectComprasPendentes();
+
+        $this->loadTemplateAdmin("Business/client/ComprasPendentes", $this->data);
+    }
+
+    public function Delivery()
+    {
+        $produto = new Produto();
+        $this->data['compras'] = $produto->SelectFinalizadas();
+        $this->loadTemplateAdmin("Business/client/Delivery", $this->data);
+    }
+
+    public function Delivered($id)
+    {
+        $produto = new Produto();
+        $produto->Delivered($id);
+
+        header('Location: ' . BASE_URL . 'Business/Buy');
+        exit;
+    }
+
+    public function CompraPerson($id)
+    {
+        $produto = new Produto();
+        $this->data['client'] = $produto->SelectComprasId($id);
+
+        $venda = new Venda();
+        $compra_user = $venda->SelectCompraUser($id);
+        $this->data['compra_user'] = $compra_user;
+
+        $this->loadTemplateAdmin("Business/CompraPerson", $this->data);
+    }
+
+    public function CompraRealizadas($id)
+    {
+        $produto = new Produto();
+        $this->data['client'] = $produto->SelectComprasFinishID($id);
+
+        $venda = new Venda();
+        $compra_user = $venda->SelectCompraUser($id);
+        $this->data['compra_user'] = $compra_user;
+
+        $this->loadTemplateAdmin("Business/client/CompraPersonFinish", $this->data);
+    }
+
+    public function Analistic()
+    {
+        $produto = new Produto();
+        $products = $produto->getAll();
+        $this->data['products'] = $products;
+        $this->data['nivel-1'] = 'Dashboard';
+
+        $categoria = new Categoria();
+        $this->data['categorias'] = $categoria->getAll();
+
+        $grafico = new Produto();
+        $venda_item = $grafico->VendasMensais();
+
+        $nomes = [];
+        $quantidades = [];
+
+        foreach ($venda_item as $p) {
+            $mesNumero = (int)$p['mes'];
+            $mesNome = date("F", mktime(0, 0, 0, $mesNumero, 10));
+            $nomes[] = $mesNome;
+            $quantidades[] = (float)$p['quantidade'];
+        }
+
+        $this->data['nomes'] = json_encode($nomes);
+        $this->data['totais'] = json_encode($quantidades);
+
+        $this->loadTemplateAdmin('Business/analytics', $this->data);
+    }
+
+    public function VoltarProducts()
+    {
+        header("Location: " . BASE_URL . "Business/AddItemVenda");
+        exit;
+    }
+
+    public function ComprasRealizadas()
+    {
+        $produto = new Produto();
+        $this->data['compras'] = $produto->SelectComprasPendentes();
+        $this->loadTemplateAdmin("Business/client/ComprasFinalizadas", $this->data);
+    }
+     public function gerenciarCaixa(){
+        $caixa = new Caixa();
+        $this->data['caixa']= $caixa->SelectCaixa();
+        $this->loadTemplateAdmin("Business/Caixa", $this->data);
+    
+    }
+}
 

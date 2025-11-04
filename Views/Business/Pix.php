@@ -1,5 +1,10 @@
 <main class="content">
     <div class="container-fluid">
+         <a href="<?= BASE_URL ?>Business/VoltarProducts" class="mb-3 btn d-flex align-items-center justify-content-center btn btn-outline-secondary rounded-circle" style="width: 38px; height: 38px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        </a>
         <div class="row mb-2 mb-xl-3">
             <div class="col-auto d-none d-sm-block">
                 <h3><strong>Pix</strong></h3>
@@ -24,29 +29,7 @@
             </div>
             <div class="card-body">
                 <div class="row d-flex justify-content-between">
-                    <div class="col-md-5">
-                        <div class="card rounded">
-                            <div class="card-header"></div>
-                            <div class="card-body">
-                                <div class="p-2">
-                                    <h3>Valor Total:</h3>
-                                    <div class="shadow-lg p-3 mb-4 bg-white rounded" style="font-size: 20px;">R$ <?= $soma[0] ? $soma[0] : '00.00' ?></div>
-                                </div>
-
-                                <div class="p-2">
-                                    <h3>Forma de pagamento: </h3>
-                                    <div class="shadow-lg p-3 mb-4 bg-white rounded" style="font-size: 20px;"><?= $forma_de_pagamento = 'Pix'?></div>
-                                </div>
-                               <div class="actions">
-                            <a href="<?= BASE_URL ?>Business/Recomeçar" onclick="return confirm('Você tem certeza que vai cancelar a compra?')" class="btn btn-danger px-4 py-2">Cancelar</a>
-                          
-                                <button type="button" class="btn btn-success px-2 py-2" data-toggle="modal" data-target="#exampleModal">
-                                Finalizar Compra
-                            </button></div>
-
-                            </div>
-                        </div>
-                    </div>
+                   
 
                     <div class="col-md-7 ">
                         <div class="card">
@@ -88,6 +71,29 @@
 
                     </div>
                 </div>
+                 <div class="col-md-5">
+                        <div class="card rounded">
+                            <div class="card-header"></div>
+                            <div class="card-body">
+                                <div class="p-2">
+                                    <h3>Valor Total:</h3>
+                                    <div class="shadow-lg p-3 mb-4 bg-white rounded" style="font-size: 20px;">R$ <?= $soma[0] ? $soma[0] : '00.00' ?></div>
+                                </div>
+
+                                <div class="p-2">
+                                    <h3>Forma de pagamento: </h3>
+                                    <div class="shadow-lg p-3 mb-4 bg-white rounded" style="font-size: 20px;"><?= $forma_de_pagamento = 'Pix'?></div>
+                                </div>
+                               <div class="actions">
+                            <a href="<?= BASE_URL ?>Business/Recomeçar" onclick="return confirm('Você tem certeza que vai cancelar a compra?')" class="btn btn-danger px-4 py-2">Cancelar</a>
+                          
+                                <button type="button" class="btn btn-success px-2 py-2" data-toggle="modal" data-target="#exampleModal">
+                                Finalizar Compra
+                            </button></div>
+
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>

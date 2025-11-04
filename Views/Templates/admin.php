@@ -5,8 +5,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Administrativo</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap" rel="stylesheet">
+
+    <title>Administrativo</title>
 
     <link href="<?= BASE_URL; ?>Assets/css/app.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -21,10 +25,15 @@
         .slideshow-container {
             max-width: 1000px;
             position: relative;
-            margin: auto;
+        }
+
+        .modal-title {
+            font-family: "Momo Trust Display", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            color: #0066ebff;
         }
     </style>
-
 </head>
 
 <body class="">
@@ -34,51 +43,84 @@
                 <a class="sidebar-brand" href="#">
                     <span class="align-middle">Administrativo</span>
                 </a>
+
                 <ul class="sidebar-nav">
-                    <!--  -->
+                    <!-- DASHBOARD -->
                     <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Dashboard") ? 'active' : ''; ?>">
-                        <a class="sidebar-link" href="<?= BASE_URL . 'Home'; ?>">
-                            <i class="align-middle" data-feather="trending-up"></i> <span class="align-middle">DashBoard</span>
+                        <a href="#dashboardMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Dashboard") ? '' : 'collapsed'; ?>">
+                            <i class="align-middle" data-feather="home"></i>
+                            <span class="align-middle">Dashboard</span>
                         </a>
-                    </li>
-                    
-                    <!-- <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Configurações") ? 'active' : ''; ?> ">
-                      
-                        <a href="#perfil" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                            <i class="align-middle" data-feather="settings"></i>
-                            <span class="align-middle">Configurações</span>
-                        </a>
-                        <ul id="perfil" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Configurações") ? 'show' : ''; ?>" data-bs-parent="#sidebar">
-                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Usuarios") ? 'active' : ''; ?>"><a class="sidebar-link" href="<?= BASE_URL . 'Users'; ?>">Usuários</a></li>
-                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Permissões") ? 'active' : ''; ?>"><a class="sidebar-link" href="<?= BASE_URL . 'Permissions'; ?>">Grupos de permissões</a></li>
-
+                        <ul id="dashboardMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Dashboard") ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Principal") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Home'; ?>">Dashboard Principal</a>
+                            </li>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Análises") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/Analistic'; ?>">Análises</a>
+                            </li>
+                            <!-- <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Permissões") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Permissions'; ?>">Grupos de permissões</a>
+                            </li> -->
                         </ul>
-                    </li> -->
-
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Estoque") ? 'active' : ''; ?>">
-                        <a class="sidebar-link" href="<?= BASE_URL . 'Business/estoque'; ?>">
-                            <i class="align-middle" data-feather="layers"></i> <span class="align-middle">Estoque</span> </a>
-                    </li>
-                 
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Estoque") ? 'active' : ''; ?>">
-                        <a class="sidebar-link" href="<?= BASE_URL . 'Business/RupturaEstoque'; ?>">
-                            <i class="align-middle" data-feather="shopping-cart"></i> <span class="align-middle">Comprar</span> </a>
-                    </li>
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Caixa") ? 'active' : ''; ?>">
-                        <a class="sidebar-link" href="<?= BASE_URL . 'Business/caixa'; ?>">
-                            <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Caixa</span>
                     </li>
 
+                    <!-- ESTOQUE E RUPTURA -->
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Estoque" || $viewData['nivel-1'] == "Ruptura")) ? 'active' : ''; ?>">
+                        <a href="#estoqueMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Estoque" || $viewData['nivel-1'] == "Ruptura")) ? '' : 'collapsed'; ?>">
+                            <i class="align-middle" data-feather="layers"></i>
+                            <span class="align-middle">Estoque</span>
+                        </a>
+                        <ul id="estoqueMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Estoque" || $viewData['nivel-1'] == "Ruptura")) ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Estoque") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/estoque'; ?>">Gerenciar Estoque</a>
+                            </li>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Indisponiveis") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/RupturaEstoque'; ?>">Indisponíveis</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- COMPRAS -->
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Compras") ? 'active' : ''; ?>">
+                      
+                    </li>
+
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Compras" || $viewData['nivel-1'] == "Gerenciarcompras")) ? 'active' : ''; ?>">
+                        <a href="#comprasMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "compras" || $viewData['nivel-1'] == "Gerenciarcompras")) ? '' : 'collapsed'; ?>">
+                           <i class="align-middle" data-feather="shopping-cart"></i>
+                            <span class="align-middle">Compras</span>
+                        </a>
+                        <ul id="comprasMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "compras" || $viewData['nivel-1'] == "Gerenciarcompras")) ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                              <a class="sidebar-link" href="<?= BASE_URL . 'Business/ComprasFinalizadas'; ?>">
+                            <span class="align-middle">Compras Finalizadas</span>
+                        </a>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Compras") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/ComprasPedentes'; ?>">Pendentes</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- CAIXA -->
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Caixa" || $viewData['nivel-1'] == "GerenciarCaixa")) ? 'active' : ''; ?>">
+                        <a href="#caixaMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Caixa" || $viewData['nivel-1'] == "GerenciarCaixa")) ? '' : 'collapsed'; ?>">
+                            <i class="align-middle" data-feather="credit-card"></i>
+                            <span class="align-middle">Caixa</span>
+                        </a>
+                        <ul id="caixaMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Caixa" || $viewData['nivel-1'] == "GerenciarCaixa")) ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "GerenciarCaixa") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/gerenciarCaixa'; ?>">Gerenciar Caixa</a>
+                            </li>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Caixa") ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/caixa'; ?>">Caixa</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-                <div class="sidebar-cta">
-                    <div class="">
-                        <strong class=""></strong>
-                        <div class="">
-                            <!-- Está com dificuldades em alguma função? Abra um chamado com nosso time de desenvolvimento. -->
-                        </div>
-                        <div class="d-grid">
-                            <a href="#" target="_blank" class=""></a>
-                        </div>
+
+                <!-- BOTÃO DE SUPORTE -->
+                <div class="sidebar-cta mt-4">
+                    <div class="d-grid">
+                        <a href="#" class="btn btn-primary" target="_blank">Suporte / Help</a>
                     </div>
                 </div>
             </div>
@@ -89,98 +131,47 @@
                 <a class="sidebar-toggle d-flex">
                     <i class="hamburger align-self-center"></i>
                 </a>
-               
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-                                <div class="position-relative">
-                                    <i class="align-middle" data-feather="bell"></i>
-                                    <span class="indicator">4</span>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-                                <div class="dropdown-menu-header">
-                                    4 New Notifications
-                                </div>
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-danger" data-feather="alert-circle"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Update completed</div>
-                                                <div class="text-muted small mt-1">Restart server 12 to complete the update.</div>
-                                                <div class="text-muted small mt-1">30m ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-warning" data-feather="bell"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Lorem ipsum</div>
-                                                <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
-                                                <div class="text-muted small mt-1">2h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-primary" data-feather="home"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Login from 192.186.1.8</div>
-                                                <div class="text-muted small mt-1">5h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-success" data-feather="user-plus"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">New connection</div>
-                                                <div class="text-muted small mt-1">Christina accepted your request.</div>
-                                                <div class="text-muted small mt-1">14h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="dropdown-menu-footer">
-                                    <a href="#" class="text-muted">Show all notifications</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                                <i class="align-middle" data-feather="settings"></i>
-                            </a>
+                        
 
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                                <span class="text-dark"><?= $viewData['name']; ?></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item"><i class="align-middle me-1" data-feather="user"></i> Example</a>
-                                <a class="dropdown-item"><i class="align-middle me-1" data-feather="pie-chart"></i> Example</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item"><i class="align-middle me-1" data-feather="settings"></i>Configurações</a>
-                                <a class="dropdown-item"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?= BASE_URL . 'Login/logout'; ?>">Sair</a>
-                            </div>
-                        </li>
+                       <li class="nav-item dropdown d-flex align-items-center">
+    <!-- Ícone mobile -->
+    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+        <i class="align-middle" data-feather="settings"></i>
+    </a>
+
+    <!-- Imagem e nome alinhados -->
+    <a class="nav-link dropdown-toggle d-flex align-items-center d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+        <img src="<?= BASE_URL . 'Assets/img/perfil.png'; ?>" 
+             alt="IMG" 
+             class="rounded-circle me-2" 
+             height="32">
+        <span class="text-dark"><?= htmlspecialchars($viewData['name'] ?? 'Usuário'); ?></span>
+    </a>
+
+    <!-- Dropdown menu -->
+    <ul class="dropdown-menu dropdown-menu-end mt-5">
+        <li>
+            <a class="dropdown-item" href="#">
+                <i class="align-middle me-1" data-feather="settings"></i> Configurações
+            </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item" href="<?= BASE_URL . 'Login/logout'; ?>">
+                <i class="align-middle me-1" data-feather="log-out"></i> Sair
+            </a>
+        </li>
+    </ul>
+</li>
+
                     </ul>
                 </div>
             </nav>
-            <?php $this->loadViewInTemplate($viewName, $viewData); ?>
 
+            <?php $this->loadViewInTemplate($viewName, $viewData); ?>
 
             <footer class="footer">
                 <div class="container-fluid">
@@ -192,18 +183,10 @@
                         </div>
                         <div class="col-6 text-end">
                             <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <a class="text-muted" href="#">Support</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a class="text-muted" href="#">Help Center</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a class="text-muted" href="#">Privacy</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a class="text-muted" href="#">Terms</a>
-                                </li>
+                                <li class="list-inline-item"><a class="text-muted" href="#">Support</a></li>
+                                <li class="list-inline-item"><a class="text-muted" href="#">Help Center</a></li>
+                                <li class="list-inline-item"><a class="text-muted" href="#">Privacy</a></li>
+                                <li class="list-inline-item"><a class="text-muted" href="#">Terms</a></li>
                             </ul>
                         </div>
                     </div>
@@ -211,6 +194,7 @@
             </footer>
         </div>
     </div>
+
     <script src="<?= BASE_URL; ?>Assets/js/jquery-3.5.1.js"></script>
     <script src="<?= BASE_URL; ?>Assets/js/jquery.mask.js"></script>
     <script src="<?= BASE_URL; ?>Assets/js/app.js"></script>
@@ -221,5 +205,4 @@
         echo $viewData['JS'];
     }; ?>
 </body>
-
 </html>

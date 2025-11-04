@@ -24,4 +24,15 @@ Class Controller{
 
 		}
 	}
+	public function isLoggedIn() {
+        return isset($_SESSION['operador']) && !empty($_SESSION['operador']);
+    }
+
+    public function requireLogin() {
+        if (!$this->isLoggedIn()) {
+            // Redireciona para a página de login se não estiver logado
+            header("Location: " . BASE_URL . "login"); 
+            exit;
+        }
+    }
 }

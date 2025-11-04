@@ -1,7 +1,6 @@
-
-
-
-
+function oi(){
+   alert("oi");
+}
 
 
 
