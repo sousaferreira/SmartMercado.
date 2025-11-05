@@ -46,83 +46,80 @@
 
                 <ul class="sidebar-nav">
                     <!-- DASHBOARD -->
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Dashboard") ? 'active' : ''; ?>">
-                        <a href="#dashboardMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Dashboard") ? '' : 'collapsed'; ?>">
+                    <!-- DASHBOARD -->
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Dashboard') ? 'active' : ''; ?>">
+                        <a href="#dashboardMenu" data-bs-toggle="collapse"
+                            class="sidebar-link <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Dashboard') ? '' : 'collapsed'; ?>">
                             <i class="align-middle" data-feather="home"></i>
                             <span class="align-middle">Dashboard</span>
                         </a>
-                        <ul id="dashboardMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Dashboard") ? 'show' : ''; ?>" data-bs-parent="#sidebar">
-                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Principal") ? 'active' : ''; ?>">
+                        <ul id="dashboardMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Dashboard') ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Principal') ? 'active' : ''; ?>">
                                 <a class="sidebar-link" href="<?= BASE_URL . 'Home'; ?>">Dashboard Principal</a>
                             </li>
-                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Análises") ? 'active' : ''; ?>">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Análises') ? 'active' : ''; ?>">
                                 <a class="sidebar-link" href="<?= BASE_URL . 'Business/Analistic'; ?>">Análises</a>
                             </li>
-                            <!-- <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == "Permissões") ? 'active' : ''; ?>">
-                                <a class="sidebar-link" href="<?= BASE_URL . 'Permissions'; ?>">Grupos de permissões</a>
-                            </li> -->
                         </ul>
                     </li>
 
-                    <!-- ESTOQUE E RUPTURA -->
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Estoque" || $viewData['nivel-1'] == "Ruptura")) ? 'active' : ''; ?>">
-                        <a href="#estoqueMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Estoque" || $viewData['nivel-1'] == "Ruptura")) ? '' : 'collapsed'; ?>">
+                    <!-- ESTOQUE -->
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Estoque') ? 'active' : ''; ?>">
+                        <a href="#estoqueMenu" data-bs-toggle="collapse"
+                            class="sidebar-link <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Estoque') ? '' : 'collapsed'; ?>">
                             <i class="align-middle" data-feather="layers"></i>
                             <span class="align-middle">Estoque</span>
                         </a>
-                        <ul id="estoqueMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Estoque" || $viewData['nivel-1'] == "Ruptura")) ? 'show' : ''; ?>" data-bs-parent="#sidebar">
-                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Estoque") ? 'active' : ''; ?>">
+                        <ul id="estoqueMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Estoque') ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Disponivel') ? 'active' : ''; ?>">
                                 <a class="sidebar-link" href="<?= BASE_URL . 'Business/estoque'; ?>">Gerenciar Estoque</a>
                             </li>
-                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Indisponiveis") ? 'active' : ''; ?>">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Indisponiveis') ? 'active' : ''; ?>">
                                 <a class="sidebar-link" href="<?= BASE_URL . 'Business/RupturaEstoque'; ?>">Indisponíveis</a>
                             </li>
                         </ul>
                     </li>
 
                     <!-- COMPRAS -->
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Compras") ? 'active' : ''; ?>">
-                      
-                    </li>
-
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Compras" || $viewData['nivel-1'] == "Gerenciarcompras")) ? 'active' : ''; ?>">
-                        <a href="#comprasMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "compras" || $viewData['nivel-1'] == "Gerenciarcompras")) ? '' : 'collapsed'; ?>">
-                           <i class="align-middle" data-feather="shopping-cart"></i>
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Compras') ? 'active' : ''; ?>">
+                        <a href="#comprasMenu" data-bs-toggle="collapse"
+                            class="sidebar-link <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Compras') ? '' : 'collapsed'; ?>">
+                            <i class="align-middle" data-feather="shopping-cart"></i>
                             <span class="align-middle">Compras</span>
                         </a>
-                        <ul id="comprasMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "compras" || $viewData['nivel-1'] == "Gerenciarcompras")) ? 'show' : ''; ?>" data-bs-parent="#sidebar">
-                              <a class="sidebar-link" href="<?= BASE_URL . 'Business/ComprasFinalizadas'; ?>">
-                            <span class="align-middle">Compras Finalizadas</span>
-                        </a>
-                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Compras") ? 'active' : ''; ?>">
-                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/ComprasPedentes'; ?>">Pendentes</a>
+                        <ul id="comprasMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Compras') ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Finalizadas') ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/ComprasFinalizadas'; ?>">Compras Finalizadas</a>
+                            </li>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Pendentes') ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/ComprasPendentes'; ?>">Pendentes</a>
                             </li>
                         </ul>
                     </li>
 
                     <!-- CAIXA -->
-                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Caixa" || $viewData['nivel-1'] == "GerenciarCaixa")) ? 'active' : ''; ?>">
-                        <a href="#caixaMenu" data-bs-toggle="collapse" class="sidebar-link <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Caixa" || $viewData['nivel-1'] == "GerenciarCaixa")) ? '' : 'collapsed'; ?>">
+                    <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Caixa') ? 'active' : ''; ?>">
+                        <a href="#caixaMenu" data-bs-toggle="collapse"
+                            class="sidebar-link <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Caixa') ? '' : 'collapsed'; ?>">
                             <i class="align-middle" data-feather="credit-card"></i>
                             <span class="align-middle">Caixa</span>
                         </a>
-                        <ul id="caixaMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && ($viewData['nivel-1'] == "Caixa" || $viewData['nivel-1'] == "GerenciarCaixa")) ? 'show' : ''; ?>" data-bs-parent="#sidebar">
-                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "GerenciarCaixa") ? 'active' : ''; ?>">
+                        <ul id="caixaMenu" class="sidebar-dropdown list-unstyled collapse <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == 'Caixa') ? 'show' : ''; ?>" data-bs-parent="#sidebar">
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'GerenciarCaixa') ? 'active' : ''; ?>">
                                 <a class="sidebar-link" href="<?= BASE_URL . 'Business/gerenciarCaixa'; ?>">Gerenciar Caixa</a>
                             </li>
-                            <li class="sidebar-item <?= (isset($viewData['nivel-1']) && $viewData['nivel-1'] == "Caixa") ? 'active' : ''; ?>">
-                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/caixa'; ?>">Caixa</a>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Caixa') ? 'active' : ''; ?>">
+                                <a class="sidebar-link" target="_blank" href="<?= BASE_URL . 'Business/caixa'; ?>">Caixa</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
-
-                <!-- BOTÃO DE SUPORTE -->
-                <div class="sidebar-cta mt-4">
-                    <div class="d-grid">
-                        <a href="#" class="btn btn-primary" target="_blank">Suporte / Help</a>
+                    <!-- BOTÃO DE SUPORTE -->
+                    <div class="sidebar-cta mt-4">
+                        <div class="d-grid">
+                            <a href="#" class="btn btn-primary" target="_blank">Suporte / Help</a>
+                        </div>
                     </div>
-                </div>
             </div>
         </nav>
 
@@ -134,38 +131,40 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
-                        
 
-                       <li class="nav-item dropdown d-flex align-items-center">
-    <!-- Ícone mobile -->
-    <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-        <i class="align-middle" data-feather="settings"></i>
-    </a>
 
-    <!-- Imagem e nome alinhados -->
-    <a class="nav-link dropdown-toggle d-flex align-items-center d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-        <img src="<?= BASE_URL . 'Assets/img/perfil.png'; ?>" 
-             alt="IMG" 
-             class="rounded-circle me-2" 
-             height="32">
-        <span class="text-dark"><?= htmlspecialchars($viewData['name'] ?? 'Usuário'); ?></span>
-    </a>
+                        <li class="nav-item dropdown d-flex align-items-center">
+                            <!-- Ícone mobile -->
+                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                                <i class="align-middle" data-feather="settings"></i>
+                            </a>
 
-    <!-- Dropdown menu -->
-    <ul class="dropdown-menu dropdown-menu-end mt-5">
-        <li>
-            <a class="dropdown-item" href="#">
-                <i class="align-middle me-1" data-feather="settings"></i> Configurações
-            </a>
-        </li>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-            <a class="dropdown-item" href="<?= BASE_URL . 'Login/logout'; ?>">
-                <i class="align-middle me-1" data-feather="log-out"></i> Sair
-            </a>
-        </li>
-    </ul>
-</li>
+                            <!-- Imagem e nome alinhados -->
+                            <a class="nav-link dropdown-toggle d-flex align-items-center d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+                                <img src="<?= BASE_URL . 'Assets/img/perfil.png'; ?>"
+                                    alt="IMG"
+                                    class="rounded-circle me-2"
+                                    height="32">
+                                <span class="text-dark"><?= htmlspecialchars($viewData['name'] ?? 'Usuário'); ?></span>
+                            </a>
+
+                            <!-- Dropdown menu -->
+                            <ul class="dropdown-menu dropdown-menu-end mt-5">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="align-middle me-1" data-feather="settings"></i> Configurações
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="<?= BASE_URL . 'Login/logout'; ?>">
+                                        <i class="align-middle me-1" data-feather="log-out"></i> Sair
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
                     </ul>
                 </div>
@@ -205,4 +204,5 @@
         echo $viewData['JS'];
     }; ?>
 </body>
+
 </html>

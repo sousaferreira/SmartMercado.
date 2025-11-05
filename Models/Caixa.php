@@ -38,19 +38,46 @@ class Caixa extends Model
         return $sql->fetch();
     
     }
-    public function SelectCaixa(){
+    public function SelectCaixaAll(){
          $sql = $this->db->prepare("SELECT * FROM caixa");
         $sql->execute();
         return $sql->fetchAll();
     }
+
+    public function SelectCaixa(){
+         $sql = $this->db->prepare("SELECT valor_inicial FROM caixa");
+        $sql->execute();
+        return $sql->fetch();
+    }
+    public function SelectCaixaOp($caixa){
+         $sql = $this->db->prepare("SELECT * FROM caixa WHERE caixa = :caixa");
+         $sql->bindValue(':caixa', $caixa);
+        $sql->execute();
+        return $sql->fetch();
+    }
    public function addValorInicial($id,  $valor_inicial){
     $sql = $this->db->prepare("UPDATE caixa SET valor_inicial = :valor_inicial WHERE id = :id ");
 
-    $sql->bindValue(':id', $id); // corrigido para :id
+    $sql->bindValue(':id', $id); 
     $sql->bindValue(':valor_inicial', $valor_inicial);
   
   
     $sql->execute();
 }
+
+  public function AddFechamentoCaixa($data_abertura, $valor_final, $data_fechamento, $status)
+{
+    $sql = $this->db->prepare("UPDATE caixa SET valor_final = :valor_final, data_fechamento = :data_fechamento, status = :status  WHERE data_abertura = :data_abertura");
+
+    $sql->bindValue(':data_abertura', $data_abertura); 
+    $sql->bindValue(':valor_final', $valor_final);
+    $sql->bindValue(':data_fechamento', $data_fechamento);
+    $sql->bindValue(':status', $status);
+
+    $sql->execute();
+}
+
+
+
 
 }

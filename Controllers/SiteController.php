@@ -287,8 +287,6 @@ class SiteController extends Controller
             }
         }
 
-        unset($_SESSION['cart']);
-        $_SESSION['cart'] = [];
 
         header('Location: https://wa.me/85982318794?text=Olá, quero finalizar minha compra! Produtos selecionados: ' . ($produtos ?? ''));
         exit();

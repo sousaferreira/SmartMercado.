@@ -12,6 +12,8 @@ class OperadorCaixaController extends Controller
         $venda = new Venda();
         $produto = new Produto();
         $caixa = new Caixa();
+        
+       
 
         if (isset($_GET['nome']) && isset($_GET['valor'])) {
         }
@@ -22,6 +24,9 @@ class OperadorCaixaController extends Controller
 
         $this->data['operador'] = $_SESSION['operador'];
         $this->data['caixa'] = $_SESSION['caixa'] ?? [];
+
+        $caixa = new Caixa();
+        $this->data['caixaOperador'] = $caixa->SelectCaixa();
 
 
         $this->loadViewInTemplate('PDV/caixa', $this->data);
@@ -35,6 +40,7 @@ class OperadorCaixaController extends Controller
             echo 'Produto inexistente';
             return;
         }
+
 
         $ProdutoId = $cart['hash'];
         $quantidade = $cart['quantidade'];
@@ -74,70 +80,84 @@ class OperadorCaixaController extends Controller
             header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
     }
-    public function BuscarCod()
-    {
-        $codigo_barras = addslashes($_GET['codigo_barras']);
-        $quantidade = $_GET['quantidade'] ? $_GET['quantidade'] : '1';
+  public function BuscarCod()
+{
+    $venda = new Venda();
+    $produtoModel = new Produto();
+    $caixaModel = new Caixa();
 
+    $this->data['operador'] = $_SESSION['operador'] ?? [];
+    $this->data['caixa'] = $_SESSION['caixa'] ?? [];
 
+    $this->data['caixaOperador'] = $caixaModel->SelectCaixa();
 
-        $caixa = new Caixa();
-        $produto = $caixa->SearchBarras($codigo_barras);
+    $codigo_barras = isset($_GET['codigo_barras']) ? trim(addslashes($_GET['codigo_barras'])) : '';
+    $quantidade = isset($_GET['quantidade']) && $_GET['quantidade'] !== '' ? (int)$_GET['quantidade'] : 1;
 
-        if ($produto == false) {
-            echo '<div class="alert alert-danger text-center  " role="alert">
-            Não existe nenhum prodto com esse código
-            </div>';
-        } else {
-
-
-            $ProdutoId = $produto['id'];
-            $nome = $produto['nome'];
-            $imagem = $produto['imagem'];
-            $valorUni = $produto['valor'];
-            $valor =  $produto['valor'];
-            $descricao = $produto['descricao'];
-
-
-
-            if (isset($_SESSION['caixa'][$ProdutoId])) {
-                $_SESSION['caixa'][$ProdutoId]['quantity'] = $quantidade;
-                $_SESSION['caixa'][$ProdutoId]['price'] = $valor * $_SESSION['caixa'][$ProdutoId]['quantity'];
-            } else {
-                $_SESSION['caixa'][$ProdutoId] = [
-                    'id' => $ProdutoId,
-                    'name' => $nome,
-                    'image' => $imagem,
-                    'descricao' => $descricao,
-                    'valor' =>  $valorUni,
-                    'price' => $valor,
-                    'codigo_barras' => $codigo_barras,
-                    'quantity' => $quantidade
-                ];
-            }
-        }
-        $this->data['operador'] = $_SESSION['operador'];
-        $this->data['caixa'] = $_SESSION['caixa'];
-
-
-        $venda = new Venda();
-        $produto = new Produto();
-
-
-
-
-
-        $this->data['products'] = $produto->getEstoque();
+     if (empty($codigo_barras)) {
+        $this->data['products'] = $produtoModel->getEstoque();
         $this->data['soma'] = $venda->SelectSoma();
-
-        $this->data['operador'] = $_SESSION['operador'];
-        $this->data['caixa'] = $_SESSION['caixa'];
-
-
-
-
         $this->loadViewInTemplate('PDV/caixa', $this->data);
+        return;
     }
+
+    $produto = $caixaModel->SearchBarras($codigo_barras);
+
+    if ($produto == false) {
+        echo '<div class="alert alert-danger text-center" role="alert">
+            Nenhum produto encontrado com esse código de barras.
+        </div>';
+    } elseif ($produto['quantidade'] <= 0) {
+        echo '<div class="alert alert-warning text-center" role="alert">
+            O produto <strong>' . htmlspecialchars($produto['nome']) . '</strong> está sem estoque!
+        </div>';
+    } elseif ($produto['quantidade'] < $quantidade) {
+        echo '<div class="alert alert-warning text-center" role="alert">
+            O produto <strong>' . htmlspecialchars($produto['nome']) . '</strong> possui apenas 
+            <strong>' . $produto['quantidade'] . '</strong> unidades em estoque!
+        </div>';
+    } else {
+
+        $ProdutoId = $produto['id'];
+        $nome = $produto['nome'];
+        $imagem = $produto['imagem'];
+        $valorUni = $produto['valor'];
+        $descricao = $produto['descricao'];
+
+        if (!isset($_SESSION['caixa'])) {
+            $_SESSION['caixa'] = [];
+        }
+
+        if (isset($_SESSION['caixa'][$ProdutoId])) {
+            $_SESSION['caixa'][$ProdutoId]['quantity'] += $quantidade;
+            $_SESSION['caixa'][$ProdutoId]['price'] = $_SESSION['caixa'][$ProdutoId]['quantity'] * $valorUni;
+        } else {
+          $_SESSION['caixa'][$ProdutoId] = [
+                'id' => $ProdutoId,
+                'name' => $nome,
+                'image' => $imagem,
+                'descricao' => $descricao,
+                'valor' => $valorUni,
+                'price' => $valorUni * $quantidade,
+                'codigo_barras' => $codigo_barras,
+                'quantity' => $quantidade
+            ];
+        }
+
+       header('Location: ' . BASE_URL . 'OperadorCaixa');
+        exit;
+    }
+
+  
+    $this->data['products'] = $produtoModel->getEstoque();
+    $this->data['soma'] = $venda->SelectSoma();
+
+    
+    $this->data['caixa'] = $_SESSION['caixa'] ?? [];
+
+    $this->loadViewInTemplate('PDV/caixa', $this->data);
+}
+
     public function troco()
     {
 
@@ -153,23 +173,110 @@ class OperadorCaixaController extends Controller
 
         $troco = $valor_recebido - $valor_total;
 
-        if($troco == 0){
+        if ($troco == 0) {
             $resposta = "VALOR SUFICIENTE";
-        }
-        else{
-            $resposta = 'Troco: R$'. number_format($troco, 2, ',', '.');
+        } else {
+            $resposta = 'Troco: R$' . number_format($troco, 2, ',', '.');
         }
         echo $resposta;
-        }
-        public function CompraCaixa($caixa ,$name ,$data_abertura){
-          
-            $radio= $_GET['forma_de_pagamento'];
-            $entrega = 0;
-            $tipo = 'fisica';
-            $valor_total = $_GET['total_compra'];
+    }
+    public function CompraCaixa($caixa, $name, $data_abertura)
+    {
 
-            $venda = new Venda();
-            $venda->AddCompraCaixa($radio, $entrega, $tipo);
+        $this->requireLogin();
 
+        $venda = new Venda();
+        $produto = new Produto();
+        $caixa = new Caixa();
+
+        if (isset($_GET['nome']) && isset($_GET['valor'])) {
         }
+
+
+        $soma = $venda->SelectSoma();
+
+        $operador = $_SESSION['operador'];
+        $caixa = $_SESSION['caixa'] ?? [];
+        $id = $venda->getId();
+        $id = $id[0];
+
+        if (!empty($caixa)) {
+            $name = [];
+
+            foreach ($caixa as $item) {
+
+                $nome = $item['name'];
+                $quantidade = $item['quantity'];
+                $imagem = $item['image'];
+
+
+                $name[] = $quantidade . 'x ' . $nome;
+
+
+                $venda->itensCompra($id, $quantidade, $nome, $imagem);
+
+
+                $venda->ProdutoQuantity($nome, $quantidade);
+            }
+
+
+            $produtos = implode(", ", $name);
+        }
+
+
+
+        $model = new Caixa();
+        $caixaOperador = $model->SelectCaixa();
+
+
+        $radio = $_GET['forma_de_pagamento'];
+        $entrega = 0;
+        $tipo = 'fisica';
+
+        $valor_total = $_GET['total_compra'];
+
+
+
+        $valor_total = $_GET['total_compra'] ?? 0;
+
+       
+        if (isset($_SESSION['valor_compras']['valorCompra'])) {
+            $_SESSION['valor_compras']['valorCompra'] += $valor_total;
+        } else {
+        
+            $_SESSION['valor_compras'] = [
+                'valorCompra' => $valor_total
+            ];
+        }
+
+        $venda->AddCompraCaixa($radio, $entrega, $tipo);
+
+
+        unset($_SESSION['caixa']);
+        header('Location:' . BASE_URL . 'OperadorCaixa/');
+    }
+    public function FecharCaixa($caixaNumber, $id)
+    {
+        $caixa = new Caixa();
+ $operador = $_SESSION['operador'];
+    $data = $operador['data_abertura'];
+  
+        $valor_final = $_SESSION['valor_compras']['valorCompra'];
+        
+        $data_fechamento = date('d/m/Y H:i:s');
+        $caixaOperador = $caixa->SelectCaixaOp($caixaNumber);
+        $valor_inicial = $caixaOperador['valor_inicial'];
+        $status = 'fechado';
+        
+
+        $caixa->AddFechamentoCaixa($data, $valor_final, $data_fechamento, $status);
+    }
+    public function CancelarVenda()
+    {
+
+        unset($_SESSION['caixa']);
+
+        header('Location: ' . BASE_URL . 'OperadorCaixa');
+        exit;
+    }
 }

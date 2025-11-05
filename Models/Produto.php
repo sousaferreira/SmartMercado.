@@ -161,7 +161,7 @@ class Produto extends Model
         $sql->execute();
         return $sql->fetchAll();
     }
-    public function SelectFinalizadas()
+    public function SelectNaoFinalizadas()
     {
         $sql = $this->db->prepare("SELECT * FROM compra_finalizada WHERE entrega = 1");
         $sql->execute();
@@ -169,7 +169,7 @@ class Produto extends Model
     }
 
      
-     public function SelectComprasPendentes()
+     public function SelectComprasOkays()
     {
         $sql = $this->db->prepare("SELECT * FROM compra_finalizada WHERE entrega = 0");
         $sql->execute();

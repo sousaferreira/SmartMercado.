@@ -131,8 +131,6 @@ class Venda extends Model
 
      public function AddCompraCaixa($Radio, $entrega, $tipo)
     {
-
-
         $sql = $this->db->prepare("INSERT INTO `compra_finalizada`(`Radio`, `entrega`, `tipo`) VALUES (:Radio, :entrega, :tipo)");
         $sql->bindValue(':Radio', $Radio);
         $sql->bindValue(':entrega', $entrega);

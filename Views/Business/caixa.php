@@ -19,11 +19,16 @@
                                     <th>Valor final</th>
                                     <th>Status</th>
                                     <th>Caixa</th>
+                                    <th>Valor final</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($caixa as $produto): 
+          
+                                <?php 
+                                
+                                
+                                foreach ($caixa as $produto): 
                                     $id = $produto['id'];
                                 ?>
                                 <tr>
@@ -33,13 +38,14 @@
                                     <td><?= htmlspecialchars($produto['valor_inicial']) ?></td>
                                     <td><?= htmlspecialchars($produto['valor_final']) ?></td>
                                     <td>
-                                        <?php if($produto['status'] == 'Aberto'): ?>
+                                        <?php if($produto['status'] == 'aberto'): ?>
                                             <span class="badge bg-success"><?= $produto['status'] ?></span>
                                         <?php else: ?>
                                             <span class="badge bg-danger"><?= $produto['status'] ?></span>
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($produto['caixa']) ?></td>
+                                    <td><?= htmlspecialchars($_SESSION['valor_compras']['valorCompra'])?></td>
                                     <td>
                                         <a data-bs-toggle="modal" data-bs-target="#modal-<?= $id ?>" class="me-2" title="Adicionar valor inicial">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus text-primary" viewBox="0 0 16 16">
@@ -65,7 +71,7 @@
                                             <div class="modal-body">
                                                 <form method="post" action="<?= BASE_URL; ?>Business/AddValorInicial/<?= $produto['id'] ?>/<?= $data_abertura?>" enctype="multipart/form-data">
                                                     <div class="form-floating mt-3">
-                                                        <input type="text" name="valor_inicial" class="form-control" id="valor_inicial" placeholder="R$ 00.00" onkeypress="return(moeda(this,'.',',',event))">
+                                                        <input type="text" name="valor_inicial" class="form-control" id="valor_inicial" placeholder="R$ 00.00" >
                                                         <label for="valor_inicial">Valor inicial</label>
                                                     </div>
                                                     <div class="mt-3 text-end">

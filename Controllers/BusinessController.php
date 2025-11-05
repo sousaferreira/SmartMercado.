@@ -19,6 +19,9 @@ class BusinessController extends Controller
     // =================== ESTOQUE ===================
     public function estoque()
     {
+
+         $this->data['nivel-1'] = 'Estoque';
+         $this->data['nivel-2'] = 'Disponivel';
         $produto = new Produto();
         $categoria = new Categoria();
 
@@ -180,6 +183,8 @@ class BusinessController extends Controller
     public function RupturaEstoque()
     {
         $venda = new Venda();
+         $this->data['nivel-1'] = 'Estoque';
+         $this->data['nivel-2'] = 'Indisponivel';
         $missing = $venda->RupturaEstoque();
         $this->data['missing'] = $missing;
 
@@ -243,16 +248,20 @@ class BusinessController extends Controller
     public function ComprasFinalizadas()
     {
         $produto = new Produto();
-        // $this->data['compras'] = $produto->SelectFinalizadas();
-        $this->data['finalizadas'] = $produto->SelectFinalizadas();
-
+        // $this->data['compras'] = $produto->SelectNaoFinalizadas();
+       
+        $this->data['nivel-1'] = 'Compras';
+        $this->data['nivel-2'] = 'Finalizadas';
+         $this->data['finalizadas'] = $produto->SelectComprasOkays();
         $this->loadTemplateAdmin("Business/client/CompraFeitas", $this->data);
     }
-     public function ComprasPedentes()
+     public function ComprasPendentes()
     {
         $produto = new Produto();
-        $this->data['pendentes'] = $produto->SelectComprasPendentes();
-        // $this->data['finalizadas'] = $produto->SelectComprasPendentes();
+         $this->data['pendentes'] = $produto->SelectNaoFinalizadas();
+          $this->data['nivel-1'] = 'Compras';
+        $this->data['nivel-2'] = 'Pendentes';
+        // $this->data['finalizadas'] = $produto->SelectComprasOkays();
 
         $this->loadTemplateAdmin("Business/client/ComprasPendentes", $this->data);
     }
@@ -260,7 +269,7 @@ class BusinessController extends Controller
     public function Delivery()
     {
         $produto = new Produto();
-        $this->data['compras'] = $produto->SelectFinalizadas();
+        $this->data['compras'] = $produto->SelectNaoFinalizadas();
         $this->loadTemplateAdmin("Business/client/Delivery", $this->data);
     }
 
@@ -335,14 +344,28 @@ class BusinessController extends Controller
     public function ComprasRealizadas()
     {
         $produto = new Produto();
-        $this->data['compras'] = $produto->SelectComprasPendentes();
+        $this->data['compras'] = $produto->SelectComprasOkays();
         $this->loadTemplateAdmin("Business/client/ComprasFinalizadas", $this->data);
     }
      public function gerenciarCaixa(){
         $caixa = new Caixa();
-        $this->data['caixa']= $caixa->SelectCaixa();
+        $this->data['caixa']= $caixa->SelectCaixaAll();
+          $this->data['nivel-1'] = 'Caixa';
+        $this->data['nivel-2'] = 'GerenciarCaixa';
+
+         $this->data['valor_total']  = $_SESSION['valor_compras']['valorCompra'];
+        
         $this->loadTemplateAdmin("Business/Caixa", $this->data);
     
+    }
+    public function AddValorInicial($id){
+       
+        $caixa = new Caixa();
+        $valor_inicial = addslashes($_POST['valor_inicial']);
+        $caixa-> addValorInicial($id, $valor_inicial);
+        header('Location: '. BASE_URL. 'Business/gerenciarCaixa');
+
+
     }
 }
 
