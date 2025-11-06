@@ -1,5 +1,6 @@
-<main class="container h-100">
-    <div class="content">
+<main class="content">
+	<div class="container-fluid p-0">
+
         
          <a href="<?=BASE_URL?>Voltar/ComprasPendentes" class="mb-3 btn d-flex align-items-center justify-content-center btn btn-outline-secondary rounded-circle" style="width: 38px; height: 38px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">

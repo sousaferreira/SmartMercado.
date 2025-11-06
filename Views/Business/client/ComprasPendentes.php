@@ -1,5 +1,6 @@
-<main class="container h-100">
-    <div class="content">
+<main class="content">
+	<div class="container-fluid p-0">
+
         <div class="card">
             <div class="card-header"> Compras Realizadas</div>
             <div class="card-body">

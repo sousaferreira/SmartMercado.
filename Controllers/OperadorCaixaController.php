@@ -7,6 +7,8 @@ class OperadorCaixaController extends Controller
     public function index()
     {
 
+        
+
         $this->requireLogin();
 
         $venda = new Venda();
@@ -29,7 +31,7 @@ class OperadorCaixaController extends Controller
         $this->data['caixaOperador'] = $caixa->SelectCaixa();
 
 
-        $this->loadViewInTemplate('PDV/caixa', $this->data);
+        $this->loadViewInTemplate('PDV/pdvCaixa', $this->data);
     }
     public function CaixaAddProduct($id)
     {
@@ -94,11 +96,13 @@ class OperadorCaixaController extends Controller
     $codigo_barras = isset($_GET['codigo_barras']) ? trim(addslashes($_GET['codigo_barras'])) : '';
     $quantidade = isset($_GET['quantidade']) && $_GET['quantidade'] !== '' ? (int)$_GET['quantidade'] : 1;
 
+
+    
      if (empty($codigo_barras)) {
         $this->data['products'] = $produtoModel->getEstoque();
         $this->data['soma'] = $venda->SelectSoma();
-        $this->loadViewInTemplate('PDV/caixa', $this->data);
-        return;
+        $this->loadViewInTemplate('PDV/pdvCaixa', $this->data);
+        
     }
 
     $produto = $caixaModel->SearchBarras($codigo_barras);
@@ -142,6 +146,7 @@ class OperadorCaixaController extends Controller
                 'codigo_barras' => $codigo_barras,
                 'quantity' => $quantidade
             ];
+            $venda->ProdutoQuantity($nome, $quantidade);
         }
 
        header('Location: ' . BASE_URL . 'OperadorCaixa');
@@ -155,13 +160,13 @@ class OperadorCaixaController extends Controller
     
     $this->data['caixa'] = $_SESSION['caixa'] ?? [];
 
-    $this->loadViewInTemplate('PDV/caixa', $this->data);
+    $this->loadViewInTemplate('PDV/pdvCaixa', $this->data);
 }
 
     public function troco()
     {
 
-        $caixa = $_SESSION['caixa'];
+        $caixa = $_SESSION['caixa'] ?? [];
         $valor_total = 0;
         foreach ($caixa as $c) {
             $valor_total += $c['price'];
@@ -180,19 +185,17 @@ class OperadorCaixaController extends Controller
         }
         echo $resposta;
     }
-    public function CompraCaixa($caixa, $name, $data_abertura)
+    public function CompraCaixa($caixa, $name)
     {
 
-        $this->requireLogin();
+       
 
         $venda = new Venda();
         $produto = new Produto();
         $caixa = new Caixa();
 
-        if (isset($_GET['nome']) && isset($_GET['valor'])) {
-        }
-
-
+     
+      
         $soma = $venda->SelectSoma();
 
         $operador = $_SESSION['operador'];
@@ -208,15 +211,12 @@ class OperadorCaixaController extends Controller
                 $nome = $item['name'];
                 $quantidade = $item['quantity'];
                 $imagem = $item['image'];
-
-
+           
                 $name[] = $quantidade . 'x ' . $nome;
 
 
                 $venda->itensCompra($id, $quantidade, $nome, $imagem);
-
-
-                $venda->ProdutoQuantity($nome, $quantidade);
+         
             }
 
 
@@ -249,18 +249,24 @@ class OperadorCaixaController extends Controller
             ];
         }
 
-        $venda->AddCompraCaixa($radio, $entrega, $tipo);
+        $valorTotal = $_SESSION['valor_compras']['valorCompra'];
+       
+         $nome = 'Compra Fisica';
+        $whatsapp = 'Compra Fisica';
+       
+        $venda->AddCompraCaixa($nome, $whatsapp, $radio, $entrega, $tipo, $valor_total);
 
 
         unset($_SESSION['caixa']);
         header('Location:' . BASE_URL . 'OperadorCaixa/');
     }
-    public function FecharCaixa($caixaNumber, $id)
+    public function FecharCaixa($caixaNumber)
     {
         $caixa = new Caixa();
  $operador = $_SESSION['operador'];
     $data = $operador['data_abertura'];
   
+    
         $valor_final = $_SESSION['valor_compras']['valorCompra'];
         
         $data_fechamento = date('d/m/Y H:i:s');
@@ -273,7 +279,13 @@ class OperadorCaixaController extends Controller
     }
     public function CancelarVenda()
     {
-
+        foreach($_SESSION['caixa'] as $caixa){
+            $nome = $caixa['name'];
+            $quantidade = $caixa['quantity'];
+            
+        }
+        $venda = new Venda();
+        $venda->ProdutoQuantityVoltar($nome, $quantidade);
         unset($_SESSION['caixa']);
 
         header('Location: ' . BASE_URL . 'OperadorCaixa');

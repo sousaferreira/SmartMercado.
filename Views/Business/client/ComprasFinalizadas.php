@@ -1,5 +1,6 @@
-<main class="container h-100">
-    <div class="content">
+<main class="content">
+	<div class="container-fluid p-0">
+
         
          <a href="<?=BASE_URL?>Voltar/Compras" class="mb-3 btn d-flex align-items-center justify-content-center btn btn-outline-secondary rounded-circle" style="width: 38px; height: 38px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -52,7 +53,7 @@
                                 <!-- INICIO DE MODAL ENDEREÇO -->
                                 
                                     <div class="modal fade" id="modal-<?= $id ?>" tabindex="-1" aria-labelledby="label-<?= $id ?>" aria-hidden="true">
-                                        <div class="modal-dialog">
+                                        <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="label-<?= $id ?>">Cliente: <?= htmlspecialchars($produto['nome_cliente']) ?></h1>

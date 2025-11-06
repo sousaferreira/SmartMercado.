@@ -1,4 +1,6 @@
-<main class="container mt-4 h-100">
+<main class="content">
+	<div class="container-fluid p-0">
+
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm">
@@ -45,7 +47,16 @@
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($produto['caixa']) ?></td>
-                                    <td><?= htmlspecialchars($_SESSION['valor_compras']['valorCompra'])?></td>
+                                    <?php
+                                    if(isset($_SESSION['valor_compras']['valorCompra']) && !empty($_SESSION['valor_compras']['valorCompra'])) {
+                                        $valorFinal = $_SESSION['valor_compras']['valorCompra'];
+                                       
+                                    }else{
+                                        $valorFinal = 'sem valor final';
+                                       
+                                    }
+                                    ?>
+                                    <td><?= htmlspecialchars($valorFinal)?></td>
                                     <td>
                                         <a data-bs-toggle="modal" data-bs-target="#modal-<?= $id ?>" class="me-2" title="Adicionar valor inicial">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus text-primary" viewBox="0 0 16 16">

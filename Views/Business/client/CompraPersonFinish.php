@@ -1,11 +1,12 @@
-<main class="container h-100 ">
-    <div class="content">
+<main class="content">
+	<div class="container-fluid p-0">
+
         <div class="card">
             <div class="card-header d-flex align-items-center gap-3">
                 <?php
                 foreach ($client as $user): ?>
                 
-                    <a href="<?=BASE_URL?>Voltar/TTableFinish" class="mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <a href="<?=BASE_URL?>Voltar/TableFinish" class="mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                         </svg></a>
                     <div class="card-title mt-3">

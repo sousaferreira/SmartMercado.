@@ -200,4 +200,10 @@ class Produto extends Model
         $sql->execute();
         return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function MaisVendidos(){
+         $sql = $this->db->prepare("SELECT nome, imagem,  SUM(quantidade) AS total_vendido FROM `produtos compra` GROUP BY nome ORDER BY total_vendido DESC LIMIT 10");
+        $sql->execute();
+    return $sql->fetchAll(PDO::FETCH_ASSOC);
+}
 }

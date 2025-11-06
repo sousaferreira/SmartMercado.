@@ -1,5 +1,6 @@
-<main class="container h-100">
-    <div class="content">
+<main class="content">
+	<div class="container-fluid p-0">
+
         <div class="card">
             <div class="card-header"> Compras Realizadas</div>
             <div class="card-body">
@@ -18,6 +19,7 @@
                                             <th scope="col">Id da compra</th>
                                             <th scope="col">Nome do Cliente</th>
                                             <th scope="col">Whatsapp</th>
+                                            <th scope="col">Valor da compra</th>
                                           
 
                                         </tr>
@@ -29,6 +31,7 @@
                                                 <th scope="row"><?= $compra['id_compra'] ?></th>
                                                 <td><?= $compra['nome_cliente'] ?></td>
                                                 <td><?= $compra['whatsapp'] ?></td>
+                                                <td><?= $compra['valor_total'] ?></td>
                                                
 
                                             </tr>

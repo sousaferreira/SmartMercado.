@@ -1,5 +1,8 @@
 <?php
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class BusinessController extends Controller
 {
     private $data = array();
@@ -20,8 +23,8 @@ class BusinessController extends Controller
     public function estoque()
     {
 
-         $this->data['nivel-1'] = 'Estoque';
-         $this->data['nivel-2'] = 'Disponivel';
+        $this->data['nivel-1'] = 'Estoque';
+        $this->data['nivel-2'] = 'Disponivel';
         $produto = new Produto();
         $categoria = new Categoria();
 
@@ -183,34 +186,75 @@ class BusinessController extends Controller
     public function RupturaEstoque()
     {
         $venda = new Venda();
-         $this->data['nivel-1'] = 'Estoque';
-         $this->data['nivel-2'] = 'Indisponivel';
+        $this->data['nivel-1'] = 'Estoque';
+        $this->data['nivel-2'] = 'Indisponiveis';
         $missing = $venda->RupturaEstoque();
         $this->data['missing'] = $missing;
 
         $this->loadTemplateAdmin('Business/ComprarEstoque', $this->data);
     }
 
-    public function ExportarCSV()
+    public function ExportarPDF()
     {
+        require 'vendor/autoload.php';
+
         $venda = new Venda();
         $missing = $venda->RupturaEstoque();
 
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=ruptura_estoque.csv');
 
-        $output = fopen('php://output', 'w');
-        fputcsv($output, ['ID', 'Nome', 'Quantidade']);
+        require_once 'vendor/autoload.php';
+
+
+        $venda = new Venda();
+        $missing = $venda->RupturaEstoque();
+
+        $html_completo = '<html><body>';
+        $html_completo .= '<table class="table" border="1" cellpadding="5" cellspacing="0">';
+        $html_completo .= '<thead>';
+        $html_completo .= '<tr><th scope="col">Id</th><th scope="col">Imagem URL</th><th scope="col">Nome</th><th scope="col">Valor</th><th scope="col">Verificar</th><th scope="col">Novo valor?</th> </tr>';
+        $html_completo .= '</thead>';
+        $html_completo .= '<tbody>';
 
         foreach ($missing as $produto) {
-            fputcsv($output, [
-                $produto['id'],
-                $produto['nome'],
-                $produto['quantidade']
-            ]);
+            $id = $produto['id'];
+            $nome = $produto['nome'];
+            $valor = $produto['valor'];
+            $imagemUrl = $produto['imagem'];
+
+            $imageData = base64_encode(file_get_contents($imagemUrl));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+
+
+            $html_completo .= '<tr>';
+            $html_completo .= '<th scope="row">' . $id . '</th>';
+            $html_completo .= '<th scope="row"><img src="' . $imageSrc . '" height="200px"></th>';
+            $html_completo .= '<td>' . $nome . '</td>';
+            $html_completo .= '<td>' . $valor . '</td>';
+            $html_completo .= '<td><ul style="list-style-type: square;">
+            <li>Comprado</li>
+            <li>Não Comprado</li>
+            </ul></td>';
+            $html_completo .= '<td></td>';
+            $html_completo .= '</tr>';
         }
 
-        fclose($output);
+        $html_completo .= '</tbody>';
+        $html_completo .= '</table>';
+        $html_completo .= '</body></html>';
+
+        $options = new Options();
+        $options->set('enable_remote', true);
+        $dompdf = new Dompdf($options);
+
+        $dompdf->loadHtml($html_completo);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        if (ob_get_length()) {
+            ob_end_clean();
+        }
+
+        $dompdf->stream('compras.pdf');
         exit;
     }
 
@@ -232,7 +276,7 @@ class BusinessController extends Controller
         $produto = new Produto();
         if (isset($_GET['quantidade']) && !empty($_GET['quantidade'])) {
             $quantidade = addslashes($_GET['quantidade']);
-             $valor = addslashes($_GET['valor']);
+            $valor = addslashes($_GET['valor']);
             $produto->editAmount($quantidade, $hash, $valor);
             header('Location: ' . BASE_URL . 'Home');
             exit;
@@ -249,17 +293,17 @@ class BusinessController extends Controller
     {
         $produto = new Produto();
         // $this->data['compras'] = $produto->SelectNaoFinalizadas();
-       
+
         $this->data['nivel-1'] = 'Compras';
         $this->data['nivel-2'] = 'Finalizadas';
-         $this->data['finalizadas'] = $produto->SelectComprasOkays();
+        $this->data['finalizadas'] = $produto->SelectComprasOkays();
         $this->loadTemplateAdmin("Business/client/CompraFeitas", $this->data);
     }
-     public function ComprasPendentes()
+    public function ComprasPendentes()
     {
         $produto = new Produto();
-         $this->data['pendentes'] = $produto->SelectNaoFinalizadas();
-          $this->data['nivel-1'] = 'Compras';
+        $this->data['pendentes'] = $produto->SelectNaoFinalizadas();
+        $this->data['nivel-1'] = 'Compras';
         $this->data['nivel-2'] = 'Pendentes';
         // $this->data['finalizadas'] = $produto->SelectComprasOkays();
 
@@ -309,9 +353,12 @@ class BusinessController extends Controller
     public function Analistic()
     {
         $produto = new Produto();
+
+
         $products = $produto->getAll();
         $this->data['products'] = $products;
         $this->data['nivel-1'] = 'Dashboard';
+        $this->data['nivel-2'] = 'Análises';
 
         $categoria = new Categoria();
         $this->data['categorias'] = $categoria->getAll();
@@ -347,25 +394,32 @@ class BusinessController extends Controller
         $this->data['compras'] = $produto->SelectComprasOkays();
         $this->loadTemplateAdmin("Business/client/ComprasFinalizadas", $this->data);
     }
-     public function gerenciarCaixa(){
+    public function gerenciarCaixa()
+    {
         $caixa = new Caixa();
-        $this->data['caixa']= $caixa->SelectCaixaAll();
-          $this->data['nivel-1'] = 'Caixa';
+        $this->data['caixa'] = $caixa->SelectCaixaAll();
+        $this->data['nivel-1'] = 'Caixa';
         $this->data['nivel-2'] = 'GerenciarCaixa';
 
-         $this->data['valor_total']  = $_SESSION['valor_compras']['valorCompra'];
-        
+        $this->data['valor_total']  = $_SESSION['valor_compras']['valorCompra'] ?? [];
+
         $this->loadTemplateAdmin("Business/Caixa", $this->data);
-    
     }
-    public function AddValorInicial($id){
-       
+    public function AddValorInicial($id)
+    {
+
         $caixa = new Caixa();
         $valor_inicial = addslashes($_POST['valor_inicial']);
-        $caixa-> addValorInicial($id, $valor_inicial);
-        header('Location: '. BASE_URL. 'Business/gerenciarCaixa');
+        $caixa->addValorInicial($id, $valor_inicial);
+        header('Location: ' . BASE_URL . 'Business/gerenciarCaixa');
+    }
+    public function MaisVendidos()
+    {
+        $produto = new Produto();
+        $this->data['nivel-1'] = 'Dashboard';
+        $this->data['nivel-2'] = 'MaisVendidos';
+        $this->data['MaisVendidos'] = $produto->MaisVendidos();
 
-
+        $this->loadTemplateAdmin("Business/ProductsMore", $this->data);
     }
 }
-

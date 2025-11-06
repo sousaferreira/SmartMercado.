@@ -12,7 +12,7 @@ class VoltarController extends Controller
         exit;
     }
     public function ComprasPendentes(){
-         header('Location:'. BASE_URL .'Business/ComprasPedentes');
+         header('Location:'. BASE_URL .'Business/ComprasPendentes');
         exit;
     }
     public function TableFinish(){

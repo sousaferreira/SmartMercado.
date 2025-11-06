@@ -60,6 +60,9 @@
                             <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'Análises') ? 'active' : ''; ?>">
                                 <a class="sidebar-link" href="<?= BASE_URL . 'Business/Analistic'; ?>">Análises</a>
                             </li>
+                            <li class="sidebar-item <?= (isset($viewData['nivel-2']) && $viewData['nivel-2'] == 'MaisVendidos') ? 'active' : ''; ?>">
+                                <a class="sidebar-link" href="<?= BASE_URL . 'Business/MaisVendidos'; ?>">Produtos Mais Vendidos</a>
+                            </li>
                         </ul>
                     </li>
 

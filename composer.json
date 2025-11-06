@@ -1,0 +1,17 @@
+{
+    "name": "prisc/estruturamvc",
+    "autoload": {
+        "psr-4": {
+            "Prisc\\Estruturamvc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "sousaferreira",
+            "email": "priscilasousaferreira31@gmail.com"
+        }
+    ],
+    "require": {
+        "dompdf/dompdf": "^3.1"
+    }
+}

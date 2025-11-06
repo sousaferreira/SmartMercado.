@@ -5,13 +5,13 @@
                 <div class="card-header px-2">
                     <div class="d-flex card-header justify-content-between align-items-center">
                         <h1 class="card-title">Indisponíveis</h1>
-                        <a class="btn btn-primary" href="<?= BASE_URL ?>Business/ExportarCSV">
-                            <i class="bi bi-download"></i> Gerar planilha
+                        <a class="btn btn-primary" href="<?= BASE_URL ?>Business/ExportarPDF">
+                            <i class="bi bi-download"></i> Gerar PDF
                         </a>
                     </div>
                     <hr>
 
-                    <div class="card-body">
+                    <div class="card-body" >
                         <table class="table">
                             <thead>
                                 <tr>

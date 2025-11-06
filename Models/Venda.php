@@ -25,7 +25,7 @@ class Venda extends Model
         $sql->execute();
         return $sql->fetch();
     }
-     public function SelectCartAll($hash)
+    public function SelectCartAll($hash)
     {
         $sql = $this->db->prepare("SELECT hash FROM produto WHERE quantidade=0 AND hash = :hash");
         $sql->bindValue(":hash", $hash);
@@ -95,7 +95,7 @@ class Venda extends Model
         $sql->execute();
     }
 
-    
+
     public function ProdutoQuantity($nome, $quantidade)
     {
         $sql = $this->db->prepare("UPDATE produto SET quantidade = quantidade - :quantidade WHERE nome = :nome AND situacao=1");
@@ -104,6 +104,13 @@ class Venda extends Model
         $sql->execute();
     }
 
+    public function ProdutoQuantityVoltar($nome, $quantidade)
+    {
+        $sql = $this->db->prepare("UPDATE produto SET quantidade = quantidade + :quantidade WHERE nome = :nome AND situacao=1");
+        $sql->bindValue(':nome', $nome);
+        $sql->bindValue(':quantidade', $quantidade);
+        $sql->execute();
+    }
     public function RupturaEstoque()
     {
         $sql = $this->db->prepare("SELECT * FROM produto WHERE quantidade<=0 AND situacao = 1");
@@ -129,17 +136,23 @@ class Venda extends Model
         $sql->execute();
     }
 
-     public function AddCompraCaixa($Radio, $entrega, $tipo)
+    public function AddCompraCaixa($nome, $whatsapp, $Radio, $entrega, $tipo, $valor_total)
     {
-        $sql = $this->db->prepare("INSERT INTO `compra_finalizada`(`Radio`, `entrega`, `tipo`) VALUES (:Radio, :entrega, :tipo)");
+
+        $sql = $this->db->prepare("INSERT INTO compra_finalizada (nome_cliente, whatsapp, Radio, entrega, tipo, valor_total) VALUES (:nome_cliente, :whatsapp, :Radio, :entrega, :tipo, :valor_total)");
+
+        $sql->bindValue(':nome_cliente', $nome);
+        $sql->bindValue(':whatsapp', $whatsapp);
         $sql->bindValue(':Radio', $Radio);
         $sql->bindValue(':entrega', $entrega);
         $sql->bindValue(':tipo', $tipo);
+        $sql->bindValue(':valor_total', $valor_total);
+
         $sql->execute();
     }
 
 
-     
+
 
     public function getId()
     {
@@ -153,7 +166,7 @@ class Venda extends Model
         $sql = $this->db->prepare("INSERT INTO `produtos compra`(`id_compra`, `nome`, `quantidade`, `imagem`) VALUES (:id, :nome, :quantidade, :imagem)");
         $sql->bindValue(':id', $id);
         $sql->bindValue(':nome', $name_product);
-         $sql->bindValue(':imagem', $imagem);
+        $sql->bindValue(':imagem', $imagem);
         $sql->bindValue(':quantidade', $quantidade);
         $sql->execute();
     }
@@ -164,12 +177,11 @@ class Venda extends Model
         return $sql->fetchAll();
     }
 
-    public function SelectCompraUser($id){
+    public function SelectCompraUser($id)
+    {
         $sql = $this->db->prepare("SELECT * FROM `produtos compra` WHERE id_compra = :id");
         $sql->bindValue(":id", $id);
         $sql->execute();
         return $sql->fetchAll();
     }
-    
-   
 }
