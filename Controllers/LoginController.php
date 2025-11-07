@@ -4,7 +4,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        // Inicia sessão se não tiver
+    
         if(session_status() == PHP_SESSION_NONE){
             session_start();
         }
@@ -12,7 +12,7 @@ class LoginController extends Controller
         $user = new Users();
         $data = [];
 
-        // Redireciona se já estiver logado
+     
         if ($user->isLogged()) {
             header("Location: " . BASE_URL . "Home/");
             exit;

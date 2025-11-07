@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- <link href="<?= BASE_URL; ?>Assets/css/app.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap" rel="stylesheet">
@@ -113,7 +115,7 @@
 
         .modal-content {
             background-color: transparent;
-        
+
         }
 
         .text-light {
@@ -121,15 +123,13 @@
             font-weight: 400;
             font-style: normal;
         }
-        
-
     </style>
     <title></title>
 </head>
 
 <body class="bg-light">
     <main class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
             <div class="container-fluid">
 
                 <a class="navbar-brand" href="<?= BASE_URL ?>">
@@ -146,10 +146,12 @@
                     </span>
                 </a>
             </div>
-        </nav>
-       
+        </nav> -->
+
 
         <div id="myTab" role="tablist" class=" nav nav-tabs d-flex flex-nowrap overflow-auto mt-4 gap-3 shadow p-3 mb-5 bg-white rounded">
+
+
 
             <div class="nav-item" role="presentation">
                 <button type="button" class="nav-link active" id="todos-tab" data-bs-toggle="tab" data-bs-target="#todos-tab-pane" type="button" role="tab" aria-controls="todos-tab-pane" aria-selected="true">
@@ -160,7 +162,9 @@
 
             <div class="nav-item" role="presentation">
                 <a href='<?= BASE_URL ?>Site/Limpeza' class="nav-link">
-                    <img src="<?= BASE_URL . 'Assets/img/produtos.png'; ?>" alt="Logo" width="50" class="d-inline-block align-text-top">
+
+                  <i class="fas fa-hamburger"></i>
+
                     <p class="text-dark">Limpeza</p>
                 </a>
             </div>
@@ -193,7 +197,16 @@
                 </a>
             </div>
 
-
+            <div class=" d-flex justify-content-between">
+                <a href="<?= BASE_URL ?>Site/CartView" class="btn position-relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="dark" class="bi bi-cart3" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                    </svg>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <?= $quantidade ?>
+                    </span>
+                </a>
+            </div>
         </div>
 
 
@@ -232,13 +245,13 @@
                                     <div class="modal-body mt-3 mb-4 d-flex justify-content-center" style="position: relative;">
 
                                         <img src="<?= BASE_URL . $produto['imagem'] ?>" alt="<?= $produto['nome'] ?>" class="imagem-big" style="height: 300px;">
-                                        
-                                   </div>
-                                   <img src="<?= BASE_URL . 'Assets/img/svg.png'; ?>" alt="Logo" width="100%" class="rounded-bottom d-inline-block align-text-top" style="position: absolute; margin-top: 305px; z-index: -1;">
-                   
+
+                                    </div>
+                                    <img src="<?= BASE_URL . 'Assets/img/svg.png'; ?>" alt="Logo" width="100%" class="rounded-bottom d-inline-block align-text-top" style="position: absolute; margin-top: 305px; z-index: -1;">
+
                                 </div>
                             </div>
-                
+
                         </div>
 
                     <?php endforeach; ?>
@@ -250,7 +263,7 @@
 
 
 
-       
+
     </main>
 </body>
 

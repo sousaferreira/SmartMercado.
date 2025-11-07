@@ -55,6 +55,14 @@ class Produto extends Model
         return $sql->fetchAll();
     }
 
+     public function getEstoqueLimit()
+    {
+        $sql = $this->db->prepare("SELECT * FROM produto WHERE situacao = 1 LIMIT 3");
+        $sql->execute();
+        return $sql->fetchAll();
+    }
+  
+
     public function getEstoqueSite()
     {
         $sql = $this->db->prepare("SELECT * FROM produto WHERE situacao = 1 AND quantidade >0");

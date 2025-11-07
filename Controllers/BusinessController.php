@@ -322,7 +322,7 @@ class BusinessController extends Controller
         $produto = new Produto();
         $produto->Delivered($id);
 
-        header('Location: ' . BASE_URL . 'Business/Buy');
+        header('Location: ' . BASE_URL . 'Business/ComprasPendentes');
         exit;
     }
 
@@ -401,7 +401,7 @@ class BusinessController extends Controller
         $this->data['nivel-1'] = 'Caixa';
         $this->data['nivel-2'] = 'GerenciarCaixa';
 
-        $this->data['valor_total']  = $_SESSION['valor_compras']['valorCompra'] ?? [];
+        $this->data['valor_caixa']  = $_SESSION['valor_compras']['valorCompra'] ?? [];
 
         $this->loadTemplateAdmin("Business/Caixa", $this->data);
     }

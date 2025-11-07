@@ -20,8 +20,7 @@
                                     <th>Valor Inicial</th>
                                     <th>Valor final</th>
                                     <th>Status</th>
-                                    <th>Caixa</th>
-                                    <th>Valor final</th>
+                                    <th>Caixa</th>  
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -47,16 +46,11 @@
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($produto['caixa']) ?></td>
-                                    <?php
-                                    if(isset($_SESSION['valor_compras']['valorCompra']) && !empty($_SESSION['valor_compras']['valorCompra'])) {
-                                        $valorFinal = $_SESSION['valor_compras']['valorCompra'];
-                                       
-                                    }else{
-                                        $valorFinal = 'sem valor final';
-                                       
-                                    }
-                                    ?>
-                                    <td><?= htmlspecialchars($valorFinal)?></td>
+                                   <?php foreach($valor_caixa as $valor_total):?>
+                                    <td><?= htmlspecialchars($valor_total)?></td>
+                                    <?php endforeach?>
+
+                                    
                                     <td>
                                         <a data-bs-toggle="modal" data-bs-target="#modal-<?= $id ?>" class="me-2" title="Adicionar valor inicial">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus text-primary" viewBox="0 0 16 16">

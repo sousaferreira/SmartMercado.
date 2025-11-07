@@ -32,7 +32,7 @@ class Caixa extends Model
         $sql->execute();
     }
     public function SearchBarras($codigo_barras){
-        $sql = $this->db->prepare("SELECT * FROM produto WHERE codigo_barras = :codigo_barras");
+        $sql = $this->db->prepare("SELECT * FROM produto WHERE codigo_barras = :codigo_barras ");
         $sql->bindValue(':codigo_barras', $codigo_barras);
         $sql->execute();
         return $sql->fetch();

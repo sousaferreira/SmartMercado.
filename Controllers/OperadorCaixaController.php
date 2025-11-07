@@ -21,7 +21,7 @@ class OperadorCaixaController extends Controller
         }
 
 
-        $this->data['products'] = $produto->getEstoque();
+        $this->data['products'] = $produto->getEstoqueLimit();
         $this->data['soma'] = $venda->SelectSoma();
 
         $this->data['operador'] = $_SESSION['operador'];
@@ -98,25 +98,25 @@ class OperadorCaixaController extends Controller
 
 
     
-     if (empty($codigo_barras)) {
-        $this->data['products'] = $produtoModel->getEstoque();
-        $this->data['soma'] = $venda->SelectSoma();
-        $this->loadViewInTemplate('PDV/pdvCaixa', $this->data);
+    //  if (empty($codigo_barras)) {
+    //     // $this->data['products'] = $produtoModel->getEstoque();
+    //     $this->data['soma'] = $venda->SelectSoma();
+    //     $this->loadViewInTemplate('PDV/pdvCaixa', $this->data);
         
-    }
+    // }
 
     $produto = $caixaModel->SearchBarras($codigo_barras);
 
     if ($produto == false) {
-        echo '<div class="alert alert-danger text-center" role="alert">
+        echo '<div class="alert alert-danger text-center fixed-top" role="alert">
             Nenhum produto encontrado com esse código de barras.
         </div>';
     } elseif ($produto['quantidade'] <= 0) {
-        echo '<div class="alert alert-warning text-center" role="alert">
+        echo '<div class="alert alert-warning text-center fixed-top" role="alert" >
             O produto <strong>' . htmlspecialchars($produto['nome']) . '</strong> está sem estoque!
         </div>';
     } elseif ($produto['quantidade'] < $quantidade) {
-        echo '<div class="alert alert-warning text-center" role="alert">
+        echo '<div class="alert alert-warning text-center fixed-top" role="alert" >
             O produto <strong>' . htmlspecialchars($produto['nome']) . '</strong> possui apenas 
             <strong>' . $produto['quantidade'] . '</strong> unidades em estoque!
         </div>';
@@ -154,13 +154,25 @@ class OperadorCaixaController extends Controller
     }
 
   
-    $this->data['products'] = $produtoModel->getEstoque();
+    $this->data['products'] = $produtoModel->getEstoqueLimit();
     $this->data['soma'] = $venda->SelectSoma();
 
     
     $this->data['caixa'] = $_SESSION['caixa'] ?? [];
 
     $this->loadViewInTemplate('PDV/pdvCaixa', $this->data);
+
+    
+
+  
+   
+
+    $this->data['soma'] = $venda->SelectSoma();
+
+    
+    $this->data['caixa'] = $_SESSION['caixa'] ?? [];
+
+    
 }
 
     public function troco()
@@ -267,8 +279,8 @@ class OperadorCaixaController extends Controller
     $data = $operador['data_abertura'];
   
     
-        $valor_final = $_SESSION['valor_compras']['valorCompra'];
         
+        $valor_final = $_SESSION['valor_compras']['valorCompra'];
         $data_fechamento = date('d/m/Y H:i:s');
         $caixaOperador = $caixa->SelectCaixaOp($caixaNumber);
         $valor_inicial = $caixaOperador['valor_inicial'];
@@ -276,6 +288,7 @@ class OperadorCaixaController extends Controller
         
 
         $caixa->AddFechamentoCaixa($data, $valor_final, $data_fechamento, $status);
+        header('Location: '. BASE_URL. 'Business/gerenciarCaixa');
     }
     public function CancelarVenda()
     {
@@ -291,4 +304,15 @@ class OperadorCaixaController extends Controller
         header('Location: ' . BASE_URL . 'OperadorCaixa');
         exit;
     }
+    public function CaixaRemove($id){
+      
+        $ProdutoId = $id;
+
+        if (isset($_SESSION['caixa'][$ProdutoId])) {
+            unset($_SESSION['caixa'][$ProdutoId]);
+        }
+        header('Location:'. BASE_URL. 'OperadorCaixa');
+
+    }
+    
 }
